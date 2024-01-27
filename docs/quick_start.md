@@ -35,7 +35,7 @@ title: Quick Start
 cover the first 360 kHz of the 10 m band. Click on OK.
 
 - If all is good, the waterfall in the Band View panel will start. Click on this button
-  ![Waterfall Settings Button](assets/images/Equalizer.png) 
+  ![Waterfall Settings Button](assets/images/equalizer.png) 
   and ajust the waterfall brightness and contrast:
 
   ![Waterfall Settings](assets/images/waterfall_settings.png)

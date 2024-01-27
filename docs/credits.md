@@ -25,6 +25,6 @@ The following libraries, images and other resources were used in the JT Skimmer 
   - ![usb-cable](assets/images/usb-cable.png) &nbsp;&nbsp;[by Freepik](https://www.flaticon.com/free-icons/wire)  
 - [Icon Archive](https://www.iconarchive.com)
   - ![sysmon](assets/images/sysmon.png) &nbsp;&nbsp;[by Alecive](https://www.iconarchive.com/artist/alecive.html)
-  - ![Equalizer](assets/images/Equalizer.png) &nbsp;&nbsp;[by Oxygen Team](https://www.iconarchive.com/artist/oxygen-icons.org.html)
+  - ![equalizer](assets/images/equalizer.png) &nbsp;&nbsp;[by Oxygen Team](https://www.iconarchive.com/artist/oxygen-icons.org.html)
   - ![Speaker24x24](assets/images/Speaker24x24.png) &nbsp;&nbsp;[by Oxygen Team]("https://www.iconarchive.com/artist/oxygen-icons.org.html)
 
