@@ -1,0 +1,124 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Deterministic>false</Deterministic>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>x64</Platforms>
+    <BaseOutputPath>..\bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\obj\</BaseIntermediateOutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>JTSkimmer.ico</ApplicationIcon>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Alex\.nuget\packages\sharpgl.winforms\3.1.1\contentFiles\any\netcoreapp3.1\SharpGL.ico" />
+    <Content Remove="C:\Users\Alex\.nuget\packages\sharpgl.winforms\3.1.1\contentFiles\any\netcoreapp3.1\SharpGL.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Vendor\fa2cs\FontAwesomeIcons.cs" Link="Controls\FontAwesomeIcons.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRplayAPI_Callback.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_Callback.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRPlayAPI_Main.cs" Link="SDR Devices\SdrplayApi\SDRPlayAPI_Main.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRplayAPI_Tuner.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_Tuner.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSP1a.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSP1a.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSP2.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSP2.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSPduo.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSPduo.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSPdx.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSPdx.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="OmniRig">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>4fe359c5-a58f-459d-be95-ca559fb4f270</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\Vendor\fontawesome-free-6.4.2-web\fa-solid-900.ttf" Link="fa-solid-900.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JTSkimmer.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Vendor\airspy_host_tools_win32_x86_x64_v1_0_10\airspy.dll" Link="airspy.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Vendor\airspy_host_tools_win32_x86_x64_v1_0_10\libusb-1.0.dll" Link="libusb-1.0.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Vendor\airspy_host_tools_win32_x86_x64_v1_0_10\pthreadVC2.dll" Link="pthreadVC2.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Vendor\fftw-3.3.5\libfftw3f-3.dll" Link="libfftw3f-3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Vendor\liquid-dsp\libgcc_s_sjlj-1.dll" Link="libgcc_s_sjlj-1.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Vendor\liquid-dsp\libliquid.dll" Link="libliquid.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Vendor\rtl-sdr-release\x64\rtlsdr.dll" Link="rtlsdr.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Vendor\sdrplay_api\sdrplay_api.dll" Link="sdrplay_api.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSCore" Version="1.2.1.2" />
+    <PackageReference Include="DockPanelSuite" Version="3.1.0" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.1.0" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Serilog" Version="3.1.0-dev-02078" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00968" />
+    <PackageReference Include="SharpGL.WinForms" Version="3.1.1" />
+    <PackageReference Include="WsjtxUtils.WsjtxMessages" Version="1.0.0.65" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SDR Devices\SdrplayApi\" />
+  </ItemGroup>
+
+</Project>
