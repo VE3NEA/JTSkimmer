@@ -1,0 +1,125 @@
+{
+  "ppm": 0.0,
+  "fsFreq":
+  {
+    "fsHz": 2000000.0,
+    "syncUpdate": 0,
+    "reCal": 0
+  },
+  "syncUpdate":
+  {
+    "sampleNum": 0,
+    "period": 0
+  },
+  "resetFlags":
+  {
+    "resetGainUpdate": 0,
+    "resetRfUpdate": 0,
+    "resetFsUpdate": 0
+  },
+  "mode": 0,
+  "samplesPerPkt": 0,
+  "rsp1aParams":
+  {
+    "rfNotchEnable": 0,
+    "rfDabNotchEnable": 0
+  },
+  "rsp2Params":
+  {
+    "extRefOutputEn": 0
+  },
+  "rspDuoParams":
+  {
+    "extRefOutputEn": 0
+  },
+  "rspDxParams":
+  {
+    "hdrEnable": 0,
+    "biasTEnable": 0,
+    "antennaSel": 0,
+    "rfNotchEnable": 0,
+    "rfDabNotchEnable": 0
+  }
+}
+
+{
+  "tunerParams":
+  {
+    "bwType": 200,
+    "ifType": 0,
+    "loMode": 1,
+    "gain":
+    {
+      "gRdB": 50,
+      "LNAstate": 0,
+      "syncUpdate": 0,
+      "minGr": 20,
+      "gainVals":
+      {
+        "curr": 0.0,
+        "max": 0.0,
+        "min": 0.0
+      }
+    },
+    "rfFreq":
+    {
+      "rfHz": 200000000.0,
+      "syncUpdate": 0
+    },
+    "dcOffsetTuner":
+    {
+      "dcCal": 3,
+      "speedUp": 0,
+      "trackTime": 1,
+      "refreshRateTime": 2048
+    }
+  },
+  "ctrlParams":
+  {
+    "dcOffset":
+    {
+      "DCenable": 1,
+      "IQenable": 1
+    },
+    "decimation":
+    {
+      "enable": 0,
+      "decimationFactor": 1,
+      "wideBandSignal": 0
+    },
+    "agc":
+    {
+      "enable": 2,
+      "setPoint_dBfs": -60,
+      "attack_ms": 0,
+      "decay_ms": 0,
+      "decay_delay_ms": 0,
+      "decay_threshold_dB": 0,
+      "syncUpdate": 0
+    },
+    "adsbMode": 0
+  },
+  "rsp1aTunerParams":
+  {
+    "biasTEnable": 0
+  },
+  "rsp2TunerParams":
+  {
+    "biasTEnable": 0,
+    "amPortSel": 0,
+    "antennaSel": 5,
+    "rfNotchEnable": 0
+  },
+  "rspDuoTunerParams":
+  {
+    "biasTEnable": 0,
+    "tuner1AmPortSel": 0,
+    "tuner1AmNotchEnable": 0,
+    "rfNotchEnable": 0,
+    "rfDabNotchEnable": 0
+  },
+  "rspDxTunerParams":
+  {
+    "hdrBw": 3
+  }
+}
