@@ -1,3 +1,6 @@
+---
+---
+
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
@@ -17,11 +20,12 @@
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ site.title }}</h1>
       <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
-        <a href="index.html" class="btn">Home</a>
-        <a href="quick_start.html" class="btn">Quick Start</a>
-        <a href="download.html" class="btn">Download</a>
+        <a href={{"/index.html" | relative_url}} class="btn">Home</a>
+        <a href={{"/quick_start.html" | relative_url}} class="btn">Quick Start</a>
+        <a href={{"/download.html" | relative_url}} class="btn">Download</a>
         <a href="https://github.com/VE3NEA/JTSkimmer" class="btn">Source Code</a>
-        <a href="credits.html" class="btn">Credits</a>
+        <a href={{"/credits.html" | relative_url}} class="btn">Credits</a>
+        <a href={{"/blog.html" | relative_url}} class="btn">Blog</a>
     </header>
 
     <main id="content" class="main-content" role="main">
