@@ -6,7 +6,7 @@ title: RTL-SDR vs. Airspy, 10m
 JT Skimmer proved to be a useful tool for side-by-side comparison of different SDR receivers. I ran
 RTL-SDR and Airspy Mini on 10m for 24 hours and let them decode FT8 on 28.074 kHz.
 
-Both receivers were connected to the same antenna via my homebrew
+Both receivers were connected to the same antenna (HexBeam at 45') via my homebrew
 [splitter]({{'/2024/01/28/splitter.html' | relative_url}}). 
 Two instances of JT Skimmer wer running side by side, each with its own receiver,
 and saving decoded messages to the files.
@@ -38,7 +38,7 @@ poorly, producing several times fewer messages than Airspy, and the coorespondin
 the red line.
 
 
-![XY Chart]({{"/assets/images/blog/rlt_sdr_vs_airspy_xy.png" | relative_url}})
+![XY Chart]({{"/assets/images/blog/rtl_sdr_vs_airspy_xy.png" | relative_url}})
 
 The next screenshot shows the waterfall display of the two receivers taken during one of those 
 time slots. Airspy is on the left, and RTL-SDR is on the right. The images are almost identical,
