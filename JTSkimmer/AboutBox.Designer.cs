@@ -53,7 +53,7 @@
       label1.Name = "label1";
       label1.Size = new Size(293, 37);
       label1.TabIndex = 1;
-      label1.Text = "JT Skimmer 0.92 Beta";
+      label1.Text = "JT Skimmer 0.93 Beta";
       // 
       // label2
       // 

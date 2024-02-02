@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "JT Skimmer"
-#define MyAppVersion "0.92 beta"
+#define MyAppVersion "0.93 beta"
 #define MyAppPublisher "Alex VE3NEA"
 #define MyAppURL "https://ve3nea.github.io/JTSkimmer"
 #define MyAppExeName "JTSkimmer.exe"
@@ -11,9 +11,6 @@
 #include "..\Vendor\netcorecheck\CodeDependencies.iss"
 
 [Setup]
-; NOTE: The value of AppId uniquely identifies this application.
-; Do not use the same AppId value in installers for other applications.
-; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{48DE1FF3-0D54-4FF7-B292-CDAC1615ABB1}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
@@ -53,7 +50,6 @@ Source: ..\bin\x64\Release\libliquid.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\libusb-1.0.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\MathNet.Numerics.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\Newtonsoft.Json.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\bin\x64\Release\ObjectListView.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\pthreadVC2.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\rtlsdr.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\Serilog.dll; DestDir: {app}; Flags: ignoreversion
