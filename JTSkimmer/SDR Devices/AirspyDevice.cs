@@ -117,29 +117,36 @@ namespace JTSkimmer
 
     internal static List<SdrInfo> ListDevices()
     {
-      int count = airspy_list_devices(null, 0);
-      long[] serials = new long[count];
-      count = airspy_list_devices(serials, count);
-      if (count != serials.Length) Array.Resize(ref serials, count);
-
       var result = new List<SdrInfo>();
 
-      foreach (long serial in serials)
+      try
       {
-        AirspyError rc = airspy_open_sn(out IntPtr handle, serial);
-        if (rc != AirspyError.AIRSPY_SUCCESS) continue;
-        try
+        int count = airspy_list_devices(null, 0);
+        long[] serials = new long[count];
+        count = airspy_list_devices(serials, count);
+        if (count != serials.Length) Array.Resize(ref serials, count);
+
+        foreach (long serial in serials)
         {
-          StringBuilder name = new(255);
-          rc = airspy_version_string_read(handle, name, 255);
+          AirspyError rc = airspy_open_sn(out IntPtr handle, serial);
           if (rc != AirspyError.AIRSPY_SUCCESS) continue;
-          var type = name.ToString().ToUpper().Contains("MINI") ? SdrType.AirspyMini : SdrType.AirspyR2; 
-          result.Add(new SdrInfo(type, name.ToString(), serial.ToString()));
+          try
+          {
+            StringBuilder name = new(255);
+            rc = airspy_version_string_read(handle, name, 255);
+            if (rc != AirspyError.AIRSPY_SUCCESS) continue;
+            var type = name.ToString().ToUpper().Contains("MINI") ? SdrType.AirspyMini : SdrType.AirspyR2;
+            result.Add(new SdrInfo(type, name.ToString(), serial.ToString()));
+          }
+          finally
+          {
+            airspy_close(handle);
+          }
         }
-        finally
-        {
-          airspy_close(handle);
-        }
+      }
+      catch (Exception e)
+      {
+        Log.Error(e, "Error listing Airspy devices");
       }
 
       return result;

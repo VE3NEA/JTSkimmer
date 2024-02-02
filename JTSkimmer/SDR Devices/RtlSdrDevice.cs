@@ -131,16 +131,24 @@ namespace JTSkimmer
     internal static List<SdrInfo> ListDevices()
     {
       var result = new List<SdrInfo> ();
-      uint count = NativeRtlSdr.rtlsdr_get_device_count();
 
-      for (uint i = 0; i < count; i++)
+      try
       {
-        StringBuilder manufact = new(256);
-        StringBuilder product = new(256);
-        StringBuilder serial = new(256);
-        int rc = NativeRtlSdr.rtlsdr_get_device_usb_strings(i, manufact, product, serial);
-        if (rc != 0) continue;
-        result.Add(new SdrInfo(SdrType.RtlSdr, $"{manufact} {product}", serial.ToString()));
+        uint count = NativeRtlSdr.rtlsdr_get_device_count();
+
+        for (uint i = 0; i < count; i++)
+        {
+          StringBuilder manufact = new(256);
+          StringBuilder product = new(256);
+          StringBuilder serial = new(256);
+          int rc = NativeRtlSdr.rtlsdr_get_device_usb_strings(i, manufact, product, serial);
+          if (rc != 0) continue;
+          result.Add(new SdrInfo(SdrType.RtlSdr, $"{manufact} {product}", serial.ToString()));
+        }
+      }
+      catch (Exception e)
+      {
+        Log.Error(e, "Error listing RTL-SDR devices");
       }
 
       return result;

@@ -190,32 +190,41 @@ namespace JTSkimmer
     internal static IEnumerable<SdrInfo> ListDevices()
     {
       List<SdrInfo> result = new();
-      if (!OpenApi()) return result;
 
       try
       {
-        var rc = sdrplay_api_LockDeviceApi();
-        if (!CheckSuccess(rc, true)) return result;
+        if (!OpenApi()) return result;
 
         try
         {
-          var devices = new sdrplay_api_DeviceT[SDRPLAY_MAX_DEVICES];
-          rc = sdrplay_api_GetDevices(devices, out uint deviceCount, (uint)devices.Length);
+          var rc = sdrplay_api_LockDeviceApi();
           if (!CheckSuccess(rc, true)) return result;
 
-          for (int i = 0; i < deviceCount; i++)
-            if (devices[i].hwVer != SDRPLAY_RSPduo_ID) // {!} no support for duo yet
-              result.Add(new(SdrType.SdrPlay, SdrplayModels[devices[i].hwVer], GetSerialNumber(devices[i])));
+          try
+          {
+            var devices = new sdrplay_api_DeviceT[SDRPLAY_MAX_DEVICES];
+            rc = sdrplay_api_GetDevices(devices, out uint deviceCount, (uint)devices.Length);
+            if (!CheckSuccess(rc, true)) return result;
+
+            for (int i = 0; i < deviceCount; i++)
+              if (devices[i].hwVer != SDRPLAY_RSPduo_ID) // {!} no support for duo yet
+                result.Add(new(SdrType.SdrPlay, SdrplayModels[devices[i].hwVer], GetSerialNumber(devices[i])));
+          }
+          finally
+          {
+            sdrplay_api_UnlockDeviceApi();
+          }
         }
         finally
         {
-          sdrplay_api_UnlockDeviceApi();
+          sdrplay_api_Close();
         }
       }
-      finally
+      catch (Exception e)
       {
-        sdrplay_api_Close();
+        Log.Error(e, "Error listing SDRplay devices");
       }
+
       return result;
     }
 
