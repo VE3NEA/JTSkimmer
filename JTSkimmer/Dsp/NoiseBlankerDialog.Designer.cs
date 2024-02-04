@@ -67,7 +67,7 @@
       SnapshotBtn.Text = "Snapshot";
       SnapshotBtn.UseVisualStyleBackColor = true;
       SnapshotBtn.Visible = false;
-      SnapshotBtn.Click += button1_Click;
+      SnapshotBtn.Click += SnapshotBtn_Click;
       // 
       // label2
       // 
@@ -155,10 +155,12 @@
       Controls.Add(panel2);
       Controls.Add(panel1);
       FormBorderStyle = FormBorderStyle.FixedToolWindow;
+      KeyPreview = true;
       Name = "NoiseBlankerDialog";
       ShowInTaskbar = false;
       StartPosition = FormStartPosition.CenterScreen;
       Text = "Noise Blanker";
+      KeyDown += NoiseBlankerDialog_KeyDown;
       panel1.ResumeLayout(false);
       panel1.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();

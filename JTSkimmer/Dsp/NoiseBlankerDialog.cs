@@ -70,10 +70,15 @@ namespace JTSkimmer
       }
     }
 
-    private void button1_Click(object sender, EventArgs e)
+    private void SnapshotBtn_Click(object sender, EventArgs e)
     {
-      if (ctx.Downsampler?.NoiseBlanker  != null)
+      if (ctx.Downsampler?.NoiseBlanker != null)
         ctx.Downsampler.NoiseBlanker.SnapshotRequested = true;
+    }
+
+    private void NoiseBlankerDialog_KeyDown(object sender, KeyEventArgs e)
+    {
+      if (e.KeyCode == Keys.Escape) Close();
     }
   }
 }
