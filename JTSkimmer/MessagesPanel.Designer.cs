@@ -33,6 +33,7 @@
       toolStripEx1 = new ToolStripEx();
       ClearBtn = new ToolStripButton();
       ScrollDownBtn = new ToolStripButton();
+      CountsLabel = new ToolStripLabel();
       listBox = new ListBoxEx();
       freezeTimer = new System.Windows.Forms.Timer(components);
       toolStripEx1.SuspendLayout();
@@ -40,7 +41,7 @@
       // 
       // toolStripEx1
       // 
-      toolStripEx1.Items.AddRange(new ToolStripItem[] { ClearBtn, ScrollDownBtn });
+      toolStripEx1.Items.AddRange(new ToolStripItem[] { ClearBtn, ScrollDownBtn, CountsLabel });
       toolStripEx1.Location = new Point(0, 0);
       toolStripEx1.Name = "toolStripEx1";
       toolStripEx1.Size = new Size(800, 25);
@@ -70,6 +71,12 @@
       ScrollDownBtn.Text = "=";
       ScrollDownBtn.ToolTipText = "Scroll to Bottom";
       ScrollDownBtn.Click += ScrollDownBtn_Click;
+      // 
+      // CountsLabel
+      // 
+      CountsLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+      CountsLabel.Name = "CountsLabel";
+      CountsLabel.Size = new Size(0, 22);
       // 
       // listBox
       // 
@@ -117,5 +124,6 @@
     private ToolStripButton ScrollDownBtn;
     private ListBoxEx listBox;
     private System.Windows.Forms.Timer freezeTimer;
+    private ToolStripLabel CountsLabel;
   }
 }
