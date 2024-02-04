@@ -158,7 +158,7 @@
       KeyPreview = true;
       Name = "NoiseBlankerDialog";
       ShowInTaskbar = false;
-      StartPosition = FormStartPosition.CenterScreen;
+      StartPosition = FormStartPosition.CenterParent;
       Text = "Noise Blanker";
       KeyDown += NoiseBlankerDialog_KeyDown;
       panel1.ResumeLayout(false);
