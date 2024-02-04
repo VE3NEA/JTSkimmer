@@ -53,7 +53,7 @@ cover the first 360 kHz of the 10 m band. Click on OK.
   - click on the OmniRig button ![OmniRig Button](assets/images/OmniRig24x24.png) to 
     tune your transceiver to the frequency of the receiver
 <br>
-- Click on the Settings button ![Settings Button](assets/images/gear(1).png) 
+- Click on the Settings button ![Settings Button](assets/images/gear.png) 
   to open the Receiver Settings dialog:
 
   ![System Tray Icon](assets/images/receiver_settings.png)

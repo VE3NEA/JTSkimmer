@@ -45,6 +45,10 @@ namespace JTSkimmer
 
       CheckError(gl, false);
 
+      string version = gl.GetString(OpenGL.GL_VERSION);
+      CheckError(gl);
+      Log.Information($"OpenGL version: {version}");
+
       gl.Disable(OpenGL.GL_DEPTH_TEST);
       CheckError(gl);
 
