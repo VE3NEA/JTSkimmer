@@ -55,7 +55,24 @@ namespace JTSkimmer
 
         CheckAndScrollToBottom();
         listBox.EndUpdate();
+
+        UpdateCounts(messages);
       });
+    }
+
+    private Dictionary<string, int> Counts = new();
+
+    private void UpdateCounts(DecodedMessage[] messages)
+    {
+      foreach (DecodedMessage msg in messages)
+        Counts[msg.Mode] = Counts.GetValueOrDefault(msg.Mode) + 1;
+
+      ShowCounts();
+    }
+
+    private void ShowCounts()
+    {
+      CountsLabel.Text = string.Join("", Counts.Select(m => $"   {m.Key} ({m.Value:N0})"));
     }
 
     private void listBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -153,6 +170,9 @@ namespace JTSkimmer
     private void ClearBtn_Click(object sender, EventArgs e)
     {
       listBox.Items.Clear();
+
+      Counts.Clear();
+      ShowCounts();
     }
 
     private void ScrollDownBtn_Click(object sender, EventArgs e)

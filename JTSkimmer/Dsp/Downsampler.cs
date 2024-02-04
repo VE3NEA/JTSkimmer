@@ -15,6 +15,7 @@ namespace JTSkimmer
     private Complex32[] OutBuffer = Array.Empty<Complex32>();
     private int InCount;
 
+    internal NoiseBlanker NoiseBlanker;
     internal int DecimationFactor { get; private set; }
     internal double OutputSamplingRate { get; private set; }
 
@@ -31,6 +32,8 @@ namespace JTSkimmer
       if (DecimationFactor > 1)
         resamp = NativeLiquidDsp.msresamp2_crcf_create(NativeLiquidDsp.LiquidResampType.LIQUID_RESAMP_DECIM,
           stageCount, 0.5f * USEFUL_BANDWIDTH, 0, STOPBAND_REJECTION_DB);
+
+      NoiseBlanker = new NoiseBlanker(inputSamplingRate);
     }
 
 
@@ -38,6 +41,8 @@ namespace JTSkimmer
 
     protected override void Process(DataEventArgs<Complex32> args)
     {
+      NoiseBlanker.Process(args.Data);
+
       // no decimation is needed
       if (DecimationFactor == 1)
       {

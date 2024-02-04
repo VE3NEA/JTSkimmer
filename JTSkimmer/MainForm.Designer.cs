@@ -82,6 +82,7 @@
       VolumeLabel = new Label();
       Timer = new System.Windows.Forms.Timer(components);
       NoiseFloorMenu = new ContextMenuStrip(components);
+      NoiseBlankerBtn = new Button();
       MainMenu.SuspendLayout();
       StatusStrip.SuspendLayout();
       SystrayMenu.SuspendLayout();
@@ -457,6 +458,7 @@
       // panel1
       // 
       panel1.BorderStyle = BorderStyle.FixedSingle;
+      panel1.Controls.Add(NoiseBlankerBtn);
       panel1.Controls.Add(label2);
       panel1.Controls.Add(label1);
       panel1.Controls.Add(AddReceiverBtn);
@@ -524,6 +526,19 @@
       NoiseFloorMenu.Items.AddRange(new ToolStripItem[] { SetNfCalibrationMNU, ClearNfCalibrationMNU });
       NoiseFloorMenu.Name = "NoiseFloorMenu";
       NoiseFloorMenu.Size = new Size(175, 48);
+      // 
+      // button2
+      // 
+      NoiseBlankerBtn.BackColor = Color.Transparent;
+      NoiseBlankerBtn.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+      NoiseBlankerBtn.Location = new Point(715, 1);
+      NoiseBlankerBtn.Name = "button2";
+      NoiseBlankerBtn.Size = new Size(109, 32);
+      NoiseBlankerBtn.TabIndex = 16;
+      NoiseBlankerBtn.Text = "Noise Blanker";
+      ToolTip.SetToolTip(NoiseBlankerBtn, "Add Receiver");
+      NoiseBlankerBtn.UseVisualStyleBackColor = false;
+      NoiseBlankerBtn.Click += NoiseBlankerBtn_Click;
       // 
       // MainForm
       // 
@@ -614,5 +629,6 @@
     private Label label2;
     private Label label1;
     private ToolStripMenuItem WebsitelMNU;
+    private Button NoiseBlankerBtn;
   }
 }

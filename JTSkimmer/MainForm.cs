@@ -18,7 +18,7 @@ namespace JTSkimmer
     public MainForm()
     {
       InitializeComponent();
-
+            
       DecoderRunner.TryDeleteAllTempFolders();
 
       ctx = new(this);
@@ -90,6 +90,7 @@ namespace JTSkimmer
       if (ctx.Sdr != null)
       {
         ctx.Downsampler = new(ctx.Sdr.SamplingRate, ctx.Sdr.Info.Settings.Bandwidth);
+        ctx.Downsampler.NoiseBlanker.ApplySettings(ctx.Settings.NoiseBlanker);
         ctx.Downsampler.DataAvailable += Downsampler_DataAvailable;
         ctx.Downsampler.Enabled = !MustPause();
 
@@ -517,6 +518,11 @@ namespace JTSkimmer
     {
       if (ctx.ReceiversPanel == null) ViewReceiversMNU_Click(sender, e);
       AddReceiver();
+    }
+
+    private void NoiseBlankerBtn_Click(object sender, EventArgs e)
+    {
+      new NoiseBlankerDialog(ctx).ShowDialog();
     }
 
     private void NoiseFloorLabel_Click(object sender, EventArgs e)

@@ -12,6 +12,7 @@ namespace JTSkimmer
     public List<ReceiverSettings> Receivers = new();
     public float? NoiseFloorZero;
     public WaterfallSettings Waterfall = new();
+    public NoiseBlankerSettings NoiseBlanker = new();
 
 
     // browsable settings
