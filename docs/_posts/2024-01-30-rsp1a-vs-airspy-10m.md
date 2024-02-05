@@ -36,6 +36,18 @@ decoded 129,624 messages, which is 2.5% more than today. If I performed an A/B t
 (run Airspy for 24 hours, then SDRplay for the next 24 hours), I would come to a wrong
 conclusion that Airspy performs better than Sdrplay.
 
+
+_Added 5 Feb 2024:_
+
+A / B comparison by switching between two setups every few minutes
+is even less accurate than a day to day comparison. 
+Here is a plot of the number of messages
+decoded with Airspy Mini in each cycle in the test described above. The counts vary from
+cycle to cycle by 20%-50%, making A/B comparison results meaningless.
+
+
+![Message Count vs.Time]({{"/assets/images/blog/message_count_vs_time.png" | relative_url}})
+
 ### Conclusions
 
 - Airspy Mini and SDRplay RSP1A have the same FT8 decoding performance on 10m.
