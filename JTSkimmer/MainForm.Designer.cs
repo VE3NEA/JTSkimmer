@@ -76,13 +76,13 @@
       ToolTip = new ToolTip(components);
       VolumeTrackbar = new TrackBar();
       panel1 = new Panel();
+      NoiseBlankerBtn = new Button();
       label2 = new Label();
       label1 = new Label();
       AddReceiverBtn = new Button();
       VolumeLabel = new Label();
       Timer = new System.Windows.Forms.Timer(components);
       NoiseFloorMenu = new ContextMenuStrip(components);
-      NoiseBlankerBtn = new Button();
       MainMenu.SuspendLayout();
       StatusStrip.SuspendLayout();
       SystrayMenu.SuspendLayout();
@@ -94,10 +94,12 @@
       // 
       // MainMenu
       // 
+      MainMenu.ImageScalingSize = new Size(24, 24);
       MainMenu.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, viewToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
       MainMenu.Location = new Point(0, 0);
       MainMenu.Name = "MainMenu";
-      MainMenu.Size = new Size(1537, 24);
+      MainMenu.Padding = new Padding(9, 3, 0, 3);
+      MainMenu.Size = new Size(2196, 35);
       MainMenu.TabIndex = 0;
       MainMenu.Text = "menuStrip1";
       // 
@@ -105,13 +107,13 @@
       // 
       fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
       fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-      fileToolStripMenuItem.Size = new Size(37, 20);
+      fileToolStripMenuItem.Size = new Size(54, 29);
       fileToolStripMenuItem.Text = "File";
       // 
       // toolStripMenuItem1
       // 
       toolStripMenuItem1.Name = "toolStripMenuItem1";
-      toolStripMenuItem1.Size = new Size(93, 22);
+      toolStripMenuItem1.Size = new Size(141, 34);
       toolStripMenuItem1.Text = "Exit";
       toolStripMenuItem1.Click += ExitMNU_Click;
       // 
@@ -119,27 +121,27 @@
       // 
       viewToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ViewReceiversMNU, ViewBandViewMNU, ViewMessagesMNU });
       viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-      viewToolStripMenuItem.Size = new Size(44, 20);
+      viewToolStripMenuItem.Size = new Size(65, 29);
       viewToolStripMenuItem.Text = "View";
       // 
       // ViewReceiversMNU
       // 
       ViewReceiversMNU.Name = "ViewReceiversMNU";
-      ViewReceiversMNU.Size = new Size(175, 22);
+      ViewReceiversMNU.Size = new Size(269, 34);
       ViewReceiversMNU.Text = "Receivers";
       ViewReceiversMNU.Click += ViewReceiversMNU_Click;
       // 
       // ViewBandViewMNU
       // 
       ViewBandViewMNU.Name = "ViewBandViewMNU";
-      ViewBandViewMNU.Size = new Size(175, 22);
+      ViewBandViewMNU.Size = new Size(269, 34);
       ViewBandViewMNU.Text = "Band View";
       ViewBandViewMNU.Click += ViewBandViewMNU_Click;
       // 
       // ViewMessagesMNU
       // 
       ViewMessagesMNU.Name = "ViewMessagesMNU";
-      ViewMessagesMNU.Size = new Size(175, 22);
+      ViewMessagesMNU.Size = new Size(269, 34);
       ViewMessagesMNU.Text = "Decoded Messages";
       ViewMessagesMNU.Click += ViewMessagesMNU_Click;
       // 
@@ -147,20 +149,20 @@
       // 
       toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { SettingsMNU, SdrDevicesMNU });
       toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-      toolsToolStripMenuItem.Size = new Size(46, 20);
+      toolsToolStripMenuItem.Size = new Size(69, 29);
       toolsToolStripMenuItem.Text = "Tools";
       // 
       // SettingsMNU
       // 
       SettingsMNU.Name = "SettingsMNU";
-      SettingsMNU.Size = new Size(147, 22);
+      SettingsMNU.Size = new Size(225, 34);
       SettingsMNU.Text = "Settings...";
       SettingsMNU.Click += SettingsMNU_Click;
       // 
       // SdrDevicesMNU
       // 
       SdrDevicesMNU.Name = "SdrDevicesMNU";
-      SdrDevicesMNU.Size = new Size(147, 22);
+      SdrDevicesMNU.Size = new Size(225, 34);
       SdrDevicesMNU.Text = "SDR Devices...";
       SdrDevicesMNU.Click += SdrDevicesMNU_Click;
       // 
@@ -168,49 +170,51 @@
       // 
       helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { WebsitelMNU, UserDataFolderMNU, ReferenceDataFolderMNU, toolStripSeparator2, AboutMNU });
       helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-      helpToolStripMenuItem.Size = new Size(44, 20);
+      helpToolStripMenuItem.Size = new Size(65, 29);
       helpToolStripMenuItem.Text = "Help";
       // 
       // WebsitelMNU
       // 
       WebsitelMNU.Name = "WebsitelMNU";
-      WebsitelMNU.Size = new Size(198, 22);
+      WebsitelMNU.Size = new Size(299, 34);
       WebsitelMNU.Text = "Web Site...";
       WebsitelMNU.Click += WebsiteMNU_Click;
       // 
       // UserDataFolderMNU
       // 
       UserDataFolderMNU.Name = "UserDataFolderMNU";
-      UserDataFolderMNU.Size = new Size(198, 22);
+      UserDataFolderMNU.Size = new Size(299, 34);
       UserDataFolderMNU.Text = "User Data Folder...";
       UserDataFolderMNU.Click += UserDataFolderMNU_Click;
       // 
       // ReferenceDataFolderMNU
       // 
       ReferenceDataFolderMNU.Name = "ReferenceDataFolderMNU";
-      ReferenceDataFolderMNU.Size = new Size(198, 22);
+      ReferenceDataFolderMNU.Size = new Size(299, 34);
       ReferenceDataFolderMNU.Text = "Reference Data Folder...";
       ReferenceDataFolderMNU.Click += ReferenceDataFolderMNU_Click;
       // 
       // toolStripSeparator2
       // 
       toolStripSeparator2.Name = "toolStripSeparator2";
-      toolStripSeparator2.Size = new Size(195, 6);
+      toolStripSeparator2.Size = new Size(296, 6);
       // 
       // AboutMNU
       // 
       AboutMNU.Name = "AboutMNU";
-      AboutMNU.Size = new Size(198, 22);
+      AboutMNU.Size = new Size(299, 34);
       AboutMNU.Text = "About...";
       AboutMNU.Click += AboutMNU_Click;
       // 
       // StatusStrip
       // 
+      StatusStrip.ImageScalingSize = new Size(24, 24);
       StatusStrip.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel2, SdrLedLabel, SdrStatusLabel, SoundcardLedLabel, SoundcardStatusLabel, VacLedLabel, VacStatusLabel, OmniRigLedLabel, OmniRigStatusLabel, NetworkLedLabel, NetworkStatusLabel, IqOutputLedLabel, IqOutputStatusLabel, NoiseFloorLabel, CpuLoadlabel });
-      StatusStrip.Location = new Point(0, 927);
+      StatusStrip.Location = new Point(0, 1550);
       StatusStrip.Name = "StatusStrip";
+      StatusStrip.Padding = new Padding(1, 0, 20, 0);
       StatusStrip.ShowItemToolTips = true;
-      StatusStrip.Size = new Size(1537, 24);
+      StatusStrip.Size = new Size(2196, 35);
       StatusStrip.TabIndex = 1;
       StatusStrip.Text = "statusStrip1";
       // 
@@ -218,23 +222,22 @@
       // 
       toolStripStatusLabel2.AutoSize = false;
       toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-      toolStripStatusLabel2.Size = new Size(10, 19);
+      toolStripStatusLabel2.Size = new Size(10, 28);
       // 
       // SdrLedLabel
       // 
       SdrLedLabel.Font = new Font("Webdings", 9F, FontStyle.Regular, GraphicsUnit.Point);
       SdrLedLabel.ForeColor = Color.Gray;
       SdrLedLabel.Name = "SdrLedLabel";
-      SdrLedLabel.Size = new Size(21, 19);
+      SdrLedLabel.Size = new Size(28, 28);
       SdrLedLabel.Text = "n";
       // 
       // SdrStatusLabel
       // 
-      SdrStatusLabel.AutoSize = false;
       SdrStatusLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
       SdrStatusLabel.Name = "SdrStatusLabel";
-      SdrStatusLabel.Size = new Size(45, 19);
-      SdrStatusLabel.Text = "SDR";
+      SdrStatusLabel.Size = new Size(59, 28);
+      SdrStatusLabel.Text = "SDR  ";
       SdrStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
       SdrStatusLabel.Click += SdrDevicesMNU_Click;
       SdrStatusLabel.MouseEnter += StatusLabel_MouseEnter;
@@ -245,16 +248,15 @@
       SoundcardLedLabel.Font = new Font("Webdings", 9F, FontStyle.Regular, GraphicsUnit.Point);
       SoundcardLedLabel.ForeColor = Color.Gray;
       SoundcardLedLabel.Name = "SoundcardLedLabel";
-      SoundcardLedLabel.Size = new Size(21, 19);
+      SoundcardLedLabel.Size = new Size(28, 28);
       SoundcardLedLabel.Text = "n";
       // 
       // SoundcardStatusLabel
       // 
-      SoundcardStatusLabel.AutoSize = false;
       SoundcardStatusLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
       SoundcardStatusLabel.Name = "SoundcardStatusLabel";
-      SoundcardStatusLabel.Size = new Size(90, 19);
-      SoundcardStatusLabel.Text = "Soundcard";
+      SoundcardStatusLabel.Size = new Size(117, 28);
+      SoundcardStatusLabel.Text = "Soundcard  ";
       SoundcardStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
       // 
       // VacLedLabel
@@ -262,7 +264,7 @@
       VacLedLabel.Font = new Font("Webdings", 9F, FontStyle.Regular, GraphicsUnit.Point);
       VacLedLabel.ForeColor = Color.Gray;
       VacLedLabel.Name = "VacLedLabel";
-      VacLedLabel.Size = new Size(21, 19);
+      VacLedLabel.Size = new Size(28, 28);
       VacLedLabel.Text = "n";
       VacLedLabel.Click += SdrDevicesMNU_Click;
       VacLedLabel.MouseEnter += StatusLabel_MouseEnter;
@@ -270,11 +272,10 @@
       // 
       // VacStatusLabel
       // 
-      VacStatusLabel.AutoSize = false;
       VacStatusLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
       VacStatusLabel.Name = "VacStatusLabel";
-      VacStatusLabel.Size = new Size(45, 19);
-      VacStatusLabel.Text = "VAC";
+      VacStatusLabel.Size = new Size(58, 28);
+      VacStatusLabel.Text = "VAC  ";
       VacStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
       // 
       // OmniRigLedLabel
@@ -282,16 +283,15 @@
       OmniRigLedLabel.Font = new Font("Webdings", 9F, FontStyle.Regular, GraphicsUnit.Point);
       OmniRigLedLabel.ForeColor = Color.Gray;
       OmniRigLedLabel.Name = "OmniRigLedLabel";
-      OmniRigLedLabel.Size = new Size(21, 19);
+      OmniRigLedLabel.Size = new Size(28, 28);
       OmniRigLedLabel.Text = "n";
       // 
       // OmniRigStatusLabel
       // 
-      OmniRigStatusLabel.AutoSize = false;
       OmniRigStatusLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
       OmniRigStatusLabel.Name = "OmniRigStatusLabel";
-      OmniRigStatusLabel.Size = new Size(75, 19);
-      OmniRigStatusLabel.Text = "OmniRig";
+      OmniRigStatusLabel.Size = new Size(99, 28);
+      OmniRigStatusLabel.Text = "OmniRig  ";
       OmniRigStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
       OmniRigStatusLabel.Click += OmniRigStatusLabel_Click;
       OmniRigStatusLabel.MouseEnter += StatusLabel_MouseEnter;
@@ -302,16 +302,15 @@
       NetworkLedLabel.Font = new Font("Webdings", 9F, FontStyle.Regular, GraphicsUnit.Point);
       NetworkLedLabel.ForeColor = Color.Gray;
       NetworkLedLabel.Name = "NetworkLedLabel";
-      NetworkLedLabel.Size = new Size(21, 19);
+      NetworkLedLabel.Size = new Size(28, 28);
       NetworkLedLabel.Text = "n";
       // 
       // NetworkStatusLabel
       // 
-      NetworkStatusLabel.AutoSize = false;
       NetworkStatusLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
       NetworkStatusLabel.Name = "NetworkStatusLabel";
-      NetworkStatusLabel.Size = new Size(80, 19);
-      NetworkStatusLabel.Text = "Network";
+      NetworkStatusLabel.Size = new Size(97, 28);
+      NetworkStatusLabel.Text = "Network  ";
       NetworkStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
       NetworkStatusLabel.ToolTipText = "Network";
       // 
@@ -320,24 +319,22 @@
       IqOutputLedLabel.Font = new Font("Webdings", 9F, FontStyle.Regular, GraphicsUnit.Point);
       IqOutputLedLabel.ForeColor = Color.Gray;
       IqOutputLedLabel.Name = "IqOutputLedLabel";
-      IqOutputLedLabel.Size = new Size(21, 19);
+      IqOutputLedLabel.Size = new Size(28, 28);
       IqOutputLedLabel.Text = "n";
       // 
       // IqOutputStatusLabel
       // 
-      IqOutputStatusLabel.AutoSize = false;
       IqOutputStatusLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
       IqOutputStatusLabel.Name = "IqOutputStatusLabel";
-      IqOutputStatusLabel.Size = new Size(90, 19);
-      IqOutputStatusLabel.Text = "I/Q Output";
+      IqOutputStatusLabel.Size = new Size(118, 28);
+      IqOutputStatusLabel.Text = "I/Q Output  ";
       IqOutputStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
       // 
       // NoiseFloorLabel
       // 
-      NoiseFloorLabel.AutoSize = false;
       NoiseFloorLabel.Name = "NoiseFloorLabel";
-      NoiseFloorLabel.Size = new Size(125, 19);
-      NoiseFloorLabel.Text = "Noise Floor: -100 dB";
+      NoiseFloorLabel.Size = new Size(185, 28);
+      NoiseFloorLabel.Text = "Noise Floor: -100 dB  ";
       NoiseFloorLabel.TextAlign = ContentAlignment.MiddleLeft;
       NoiseFloorLabel.Click += NoiseFloorLabel_Click;
       NoiseFloorLabel.MouseEnter += StatusLabel_MouseEnter;
@@ -345,24 +342,23 @@
       // 
       // CpuLoadlabel
       // 
-      CpuLoadlabel.AutoSize = false;
       CpuLoadlabel.DisplayStyle = ToolStripItemDisplayStyle.Text;
       CpuLoadlabel.Name = "CpuLoadlabel";
-      CpuLoadlabel.Size = new Size(110, 19);
+      CpuLoadlabel.Size = new Size(147, 28);
       CpuLoadlabel.Text = "CPU Load: 00.0%";
       CpuLoadlabel.TextAlign = ContentAlignment.MiddleLeft;
       // 
       // SetNfCalibrationMNU
       // 
       SetNfCalibrationMNU.Name = "SetNfCalibrationMNU";
-      SetNfCalibrationMNU.Size = new Size(174, 22);
+      SetNfCalibrationMNU.Size = new Size(235, 32);
       SetNfCalibrationMNU.Text = "Set Current as Zero";
       SetNfCalibrationMNU.Click += SetNfCalibrationMNU_Click;
       // 
       // ClearNfCalibrationMNU
       // 
       ClearNfCalibrationMNU.Name = "ClearNfCalibrationMNU";
-      ClearNfCalibrationMNU.Size = new Size(174, 22);
+      ClearNfCalibrationMNU.Size = new Size(235, 32);
       ClearNfCalibrationMNU.Text = "Clear Calibration";
       ClearNfCalibrationMNU.Click += ClearNfCalibrationMNU_Click;
       // 
@@ -378,26 +374,27 @@
       // 
       // SystrayMenu
       // 
+      SystrayMenu.ImageScalingSize = new Size(24, 24);
       SystrayMenu.Items.AddRange(new ToolStripItem[] { ShowWindowMNU, toolStripSeparator1, ExitMNU });
       SystrayMenu.Name = "SystrayMenu";
-      SystrayMenu.Size = new Size(151, 54);
+      SystrayMenu.Size = new Size(200, 74);
       // 
       // ShowWindowMNU
       // 
       ShowWindowMNU.Name = "ShowWindowMNU";
-      ShowWindowMNU.Size = new Size(150, 22);
+      ShowWindowMNU.Size = new Size(199, 32);
       ShowWindowMNU.Text = "Show Window";
       ShowWindowMNU.Click += ShowWindowMNU_Click;
       // 
       // toolStripSeparator1
       // 
       toolStripSeparator1.Name = "toolStripSeparator1";
-      toolStripSeparator1.Size = new Size(147, 6);
+      toolStripSeparator1.Size = new Size(196, 6);
       // 
       // ExitMNU
       // 
       ExitMNU.Name = "ExitMNU";
-      ExitMNU.Size = new Size(150, 22);
+      ExitMNU.Size = new Size(199, 32);
       ExitMNU.Text = "Exit";
       ExitMNU.Click += ExitMNU_Click;
       // 
@@ -405,21 +402,24 @@
       // 
       DockHost.Dock = DockStyle.Fill;
       DockHost.DockBackColor = Color.FromArgb(238, 238, 242);
-      DockHost.Location = new Point(0, 60);
+      DockHost.Location = new Point(0, 94);
+      DockHost.Margin = new Padding(4, 5, 4, 5);
       DockHost.Name = "DockHost";
       DockHost.Padding = new Padding(6);
       DockHost.ShowAutoHideContentOnHover = false;
-      DockHost.Size = new Size(1537, 867);
+      DockHost.Size = new Size(2196, 1456);
       DockHost.TabIndex = 3;
       DockHost.Theme = vS2015LightTheme1;
+      DockHost.ActiveContentChanged += DockHost_ActiveContentChanged;
       // 
       // SdrGainLabel
       // 
       SdrGainLabel.BackColor = SystemColors.Control;
-      SdrGainLabel.Location = new Point(224, 2);
-      SdrGainLabel.MinimumSize = new Size(40, 0);
+      SdrGainLabel.Location = new Point(320, 3);
+      SdrGainLabel.Margin = new Padding(4, 0, 4, 0);
+      SdrGainLabel.MinimumSize = new Size(57, 0);
       SdrGainLabel.Name = "SdrGainLabel";
-      SdrGainLabel.Size = new Size(40, 32);
+      SdrGainLabel.Size = new Size(57, 53);
       SdrGainLabel.TabIndex = 8;
       SdrGainLabel.Text = "0";
       SdrGainLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -429,9 +429,10 @@
       SdrGainTrackbar.AutoSize = false;
       SdrGainTrackbar.Enabled = false;
       SdrGainTrackbar.LargeChange = 1;
-      SdrGainTrackbar.Location = new Point(68, 4);
+      SdrGainTrackbar.Location = new Point(97, 7);
+      SdrGainTrackbar.Margin = new Padding(4, 5, 4, 5);
       SdrGainTrackbar.Name = "SdrGainTrackbar";
-      SdrGainTrackbar.Size = new Size(150, 32);
+      SdrGainTrackbar.Size = new Size(214, 53);
       SdrGainTrackbar.TabIndex = 6;
       ToolTip.SetToolTip(SdrGainTrackbar, "SDR Gain");
       SdrGainTrackbar.ValueChanged += SdrGainTrackbar_ValueChanged;
@@ -444,11 +445,12 @@
       // 
       VolumeTrackbar.AutoSize = false;
       VolumeTrackbar.LargeChange = 1;
-      VolumeTrackbar.Location = new Point(343, 4);
+      VolumeTrackbar.Location = new Point(490, 7);
+      VolumeTrackbar.Margin = new Padding(4, 5, 4, 5);
       VolumeTrackbar.Maximum = 0;
       VolumeTrackbar.Minimum = -50;
       VolumeTrackbar.Name = "VolumeTrackbar";
-      VolumeTrackbar.Size = new Size(150, 32);
+      VolumeTrackbar.Size = new Size(214, 53);
       VolumeTrackbar.TabIndex = 11;
       VolumeTrackbar.TickFrequency = 10;
       ToolTip.SetToolTip(VolumeTrackbar, "Volume");
@@ -467,27 +469,44 @@
       panel1.Controls.Add(VolumeTrackbar);
       panel1.Controls.Add(VolumeLabel);
       panel1.Dock = DockStyle.Top;
-      panel1.Location = new Point(0, 24);
+      panel1.Location = new Point(0, 35);
+      panel1.Margin = new Padding(4, 5, 4, 5);
       panel1.Name = "panel1";
-      panel1.Size = new Size(1537, 36);
+      panel1.Size = new Size(2196, 59);
       panel1.TabIndex = 13;
       ToolTip.SetToolTip(panel1, "Add Receiver");
+      // 
+      // NoiseBlankerBtn
+      // 
+      NoiseBlankerBtn.BackColor = Color.Transparent;
+      NoiseBlankerBtn.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+      NoiseBlankerBtn.Location = new Point(1021, 2);
+      NoiseBlankerBtn.Margin = new Padding(4, 5, 4, 5);
+      NoiseBlankerBtn.Name = "NoiseBlankerBtn";
+      NoiseBlankerBtn.Size = new Size(156, 53);
+      NoiseBlankerBtn.TabIndex = 16;
+      NoiseBlankerBtn.Text = "Noise Blanker";
+      ToolTip.SetToolTip(NoiseBlankerBtn, "Add Receiver");
+      NoiseBlankerBtn.UseVisualStyleBackColor = false;
+      NoiseBlankerBtn.Click += NoiseBlankerBtn_Click;
       // 
       // label2
       // 
       label2.AutoSize = true;
-      label2.Location = new Point(290, 9);
+      label2.Location = new Point(414, 15);
+      label2.Margin = new Padding(4, 0, 4, 0);
       label2.Name = "label2";
-      label2.Size = new Size(47, 15);
+      label2.Size = new Size(72, 25);
       label2.TabIndex = 15;
       label2.Text = "Volume";
       // 
       // label1
       // 
       label1.AutoSize = true;
-      label1.Location = new Point(11, 9);
+      label1.Location = new Point(16, 15);
+      label1.Margin = new Padding(4, 0, 4, 0);
       label1.Name = "label1";
-      label1.Size = new Size(55, 15);
+      label1.Size = new Size(86, 25);
       label1.TabIndex = 14;
       label1.Text = "SDR Gain";
       // 
@@ -495,9 +514,10 @@
       // 
       AddReceiverBtn.BackColor = Color.Transparent;
       AddReceiverBtn.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-      AddReceiverBtn.Location = new Point(580, 1);
+      AddReceiverBtn.Location = new Point(829, 2);
+      AddReceiverBtn.Margin = new Padding(4, 5, 4, 5);
       AddReceiverBtn.Name = "AddReceiverBtn";
-      AddReceiverBtn.Size = new Size(109, 32);
+      AddReceiverBtn.Size = new Size(156, 53);
       AddReceiverBtn.TabIndex = 13;
       AddReceiverBtn.Text = "Add Receiver";
       ToolTip.SetToolTip(AddReceiverBtn, "Add Receiver");
@@ -507,10 +527,11 @@
       // VolumeLabel
       // 
       VolumeLabel.BackColor = SystemColors.Control;
-      VolumeLabel.Location = new Point(499, 2);
-      VolumeLabel.MinimumSize = new Size(40, 0);
+      VolumeLabel.Location = new Point(713, 3);
+      VolumeLabel.Margin = new Padding(4, 0, 4, 0);
+      VolumeLabel.MinimumSize = new Size(57, 0);
       VolumeLabel.Name = "VolumeLabel";
-      VolumeLabel.Size = new Size(55, 32);
+      VolumeLabel.Size = new Size(79, 53);
       VolumeLabel.TabIndex = 12;
       VolumeLabel.Text = "0";
       VolumeLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -523,34 +544,23 @@
       // 
       // NoiseFloorMenu
       // 
+      NoiseFloorMenu.ImageScalingSize = new Size(24, 24);
       NoiseFloorMenu.Items.AddRange(new ToolStripItem[] { SetNfCalibrationMNU, ClearNfCalibrationMNU });
       NoiseFloorMenu.Name = "NoiseFloorMenu";
-      NoiseFloorMenu.Size = new Size(175, 48);
-      // 
-      // button2
-      // 
-      NoiseBlankerBtn.BackColor = Color.Transparent;
-      NoiseBlankerBtn.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-      NoiseBlankerBtn.Location = new Point(715, 1);
-      NoiseBlankerBtn.Name = "button2";
-      NoiseBlankerBtn.Size = new Size(109, 32);
-      NoiseBlankerBtn.TabIndex = 16;
-      NoiseBlankerBtn.Text = "Noise Blanker";
-      ToolTip.SetToolTip(NoiseBlankerBtn, "Add Receiver");
-      NoiseBlankerBtn.UseVisualStyleBackColor = false;
-      NoiseBlankerBtn.Click += NoiseBlankerBtn_Click;
+      NoiseFloorMenu.Size = new Size(236, 68);
       // 
       // MainForm
       // 
-      AutoScaleDimensions = new SizeF(7F, 15F);
+      AutoScaleDimensions = new SizeF(10F, 25F);
       AutoScaleMode = AutoScaleMode.Font;
-      ClientSize = new Size(1537, 951);
+      ClientSize = new Size(2196, 1585);
       Controls.Add(DockHost);
       Controls.Add(panel1);
       Controls.Add(StatusStrip);
       Controls.Add(MainMenu);
       Icon = (Icon)resources.GetObject("$this.Icon");
       MainMenuStrip = MainMenu;
+      Margin = new Padding(4, 5, 4, 5);
       Name = "MainForm";
       Text = "JT Skimmer";
       FormClosing += MainForm_FormClosing;

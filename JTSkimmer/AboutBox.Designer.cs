@@ -37,7 +37,7 @@
       // CloseBtn
       // 
       CloseBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-      CloseBtn.Location = new Point(139, 112);
+      CloseBtn.Location = new Point(152, 112);
       CloseBtn.Name = "CloseBtn";
       CloseBtn.Size = new Size(75, 23);
       CloseBtn.TabIndex = 0;
@@ -46,19 +46,20 @@
       // 
       // label1
       // 
-      label1.AutoSize = true;
+      label1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
       label1.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
       label1.ForeColor = Color.Blue;
-      label1.Location = new Point(28, 9);
+      label1.Location = new Point(8, 9);
       label1.Name = "label1";
-      label1.Size = new Size(293, 37);
+      label1.Size = new Size(366, 37);
       label1.TabIndex = 1;
-      label1.Text = "JT Skimmer 0.94 Beta";
+      label1.Text = "JT Skimmer";
+      label1.TextAlign = ContentAlignment.MiddleCenter;
       // 
       // label2
       // 
       label2.AutoSize = true;
-      label2.Location = new Point(57, 55);
+      label2.Location = new Point(67, 55);
       label2.Name = "label2";
       label2.Size = new Size(244, 15);
       label2.TabIndex = 2;
@@ -67,7 +68,7 @@
       // WebsiteLabel
       // 
       WebsiteLabel.AutoSize = true;
-      WebsiteLabel.Location = new Point(154, 79);
+      WebsiteLabel.Location = new Point(164, 79);
       WebsiteLabel.Name = "WebsiteLabel";
       WebsiteLabel.Size = new Size(50, 15);
       WebsiteLabel.TabIndex = 3;

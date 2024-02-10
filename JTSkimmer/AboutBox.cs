@@ -7,6 +7,7 @@ namespace JTSkimmer
     public AboutBox()
     {
       InitializeComponent();
+      label1.Text = Utils.GetVersionString() + " Beta";
     }
 
     private void WebsiteLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

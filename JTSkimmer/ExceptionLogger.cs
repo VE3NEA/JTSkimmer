@@ -1,4 +1,5 @@
-﻿using JTSkimmer;
+﻿using System.Reflection;
+using JTSkimmer;
 using Serilog;
 
 namespace VE3NEA.HamCockpit
@@ -9,11 +10,13 @@ namespace VE3NEA.HamCockpit
     {
       string fileName = Path.Combine(Utils.GetUserDataFolder(), "Logs", "log_.txt");
       Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
-          .WriteTo.File(fileName, rollingInterval: RollingInterval.Day).CreateLogger();
+          .WriteTo.File(fileName, rollingInterval: RollingInterval.Day, fileSizeLimitBytes: (int)10e6, retainedFileCountLimit: 10).CreateLogger();
 
       Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
       AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
       Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+
+      Log.Information($"Starting {typeof(Utils).Assembly.GetName().FullName}");
     }
 
     private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

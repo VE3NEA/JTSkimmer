@@ -5,7 +5,7 @@ title: Download
 
 ### Current Version
 
-[JTSkimmer.zip v.0.94 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.94-beta/JTSkimmer.zip)
+[JTSkimmer.zip v.0.95 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.95-beta/JTSkimmer.zip)
 
 <br>
 ### Previous Versions
@@ -14,6 +14,13 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 
 <br>
 ### Release Notes
+
+#### v.0.95 Beta
+  - fixed the crash that occurred with some Windows screen settings;
+  
+  - improved status bar layout;
+  
+  - improved error logging.
 
 #### v.0.94 Beta
   - message counts are now displayed in the Messages panel

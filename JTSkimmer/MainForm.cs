@@ -18,7 +18,9 @@ namespace JTSkimmer
     public MainForm()
     {
       InitializeComponent();
-            
+
+      Text = Utils.GetVersionString();
+
       DecoderRunner.TryDeleteAllTempFolders();
 
       ctx = new(this);
@@ -569,7 +571,7 @@ namespace JTSkimmer
       {
         var baseNf = ctx.Settings.NoiseFloorZero ?? 1;
         var nf = (int)Math.Round(10 * Math.Log10(SpectrumAnalyzer.Median / baseNf));
-        NoiseFloorLabel.Text = $"Noise Floor: {nf} dB";
+        NoiseFloorLabel.Text = $"Noise Floor: {nf} dB  ";
       }
 
       // cpu
@@ -652,6 +654,11 @@ namespace JTSkimmer
       ShowInTaskbar = show;
       Visible = show;
       if (show && minimized) WindowState = FormWindowState.Normal;
+    }
+
+    private void DockHost_ActiveContentChanged(object sender, EventArgs e)
+    {
+
     }
   }
 }

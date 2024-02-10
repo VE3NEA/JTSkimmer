@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Diagnostics;
+using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
@@ -73,6 +76,12 @@ namespace JTSkimmer
         return addressBytes[0] >= 224 && addressBytes[0] <= 239;
 
       return false;
+    }
+
+    internal static string GetVersionString()
+    {
+      var version = typeof(Utils).Assembly.GetName().Version;
+      return $"{Application.ProductName} {version.Major}.{version.Minor}";
     }
   }
 }
