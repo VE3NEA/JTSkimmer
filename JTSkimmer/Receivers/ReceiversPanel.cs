@@ -110,7 +110,7 @@ namespace JTSkimmer
 
       var cellHeight = 100f / TableLayoutPanel.RowCount;
       for (int y = 0; y < TableLayoutPanel.RowCount; y++)
-        TableLayoutPanel.RowStyles.Add(new ColumnStyle(SizeType.Percent, cellHeight));
+        TableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, cellHeight));
 
       for (int i = 0; i < panels.Count; i++)
         TableLayoutPanel.Controls.Add(panels[i],
@@ -123,6 +123,8 @@ namespace JTSkimmer
 
     private (int, int) GetTableDimensions()
     {
+      if (ctx == null) return (1, 0);
+
       int panelCount = ctx.Receivers.Count;
       int colCount = panelCount;
       int rowCount = 1;
