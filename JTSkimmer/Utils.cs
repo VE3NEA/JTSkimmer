@@ -81,7 +81,9 @@ namespace JTSkimmer
     internal static string GetVersionString()
     {
       var version = typeof(Utils).Assembly.GetName().Version;
-      return $"{Application.ProductName} {version.Major}.{version.Minor}";
+
+      // {!} todo: remove 'Beta' after release
+      return $"{Application.ProductName} {version.Major}.{version.Minor} Beta";
     }
   }
 }
