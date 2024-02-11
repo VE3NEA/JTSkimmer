@@ -9,8 +9,13 @@ using Serilog;
 
 namespace JTSkimmer
 {
+  // OpenGL Extensions Viewer: https://geeks3d.com/dl/show/10097
+
+
   public partial class WaterfallControl : UserControl
   {
+    static bool OpenglInfoNeeded = true;
+
     private const int TEXTURE_WIDTH = 512;
     private const int TEXTURE_HEIGHT = 2048;
 
@@ -45,9 +50,7 @@ namespace JTSkimmer
 
       CheckError(gl, false);
 
-      string version = gl.GetString(OpenGL.GL_VERSION);
-      CheckError(gl);
-      //Log.Information($"OpenGL version: {version}");
+      LogOpenglInformation();
 
       gl.Disable(OpenGL.GL_DEPTH_TEST);
       CheckError(gl);
@@ -73,6 +76,30 @@ namespace JTSkimmer
       CreateVba(gl);
 
       StartThread();
+    }
+
+    private void LogOpenglInformation()
+    {
+      if (!OpenglInfoNeeded) return;
+      OpenglInfoNeeded = false;
+
+      OpenGL gl = OpenglControl.OpenGL;
+
+      string str = gl.GetString(OpenGL.GL_VERSION);
+      if (gl.GetError() != OpenGL.GL_NO_ERROR) str = "<Error>";
+      Log.Information($"OpenGL version: {str}");
+
+      str = gl.GetString(OpenGL.GL_VENDOR);
+      if (gl.GetError() != OpenGL.GL_NO_ERROR) str = "<Error>";
+      Log.Information($"OpenGL vendor: {str}");
+
+      str = gl.GetString(OpenGL.GL_RENDERER);
+      if (gl.GetError() != OpenGL.GL_NO_ERROR) str = "<Error>";
+      Log.Information($"OpenGL renderer: {str}");
+
+      str = gl.GetString(OpenGL.GL_SHADING_LANGUAGE_VERSION​);
+      if (gl.GetError() != OpenGL.GL_NO_ERROR) str = "<Error>";
+      Log.Information($"OpenGL shading language: {str}");
     }
 
     internal void SetPalette(Palette palette)
