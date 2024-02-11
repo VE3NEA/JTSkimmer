@@ -61,7 +61,7 @@ namespace JTSkimmer
 
       if (value)
       {
-        TryStart();
+        TryStart(true);
         if (!Running) 
           Debug.WriteLine($"Failed to start {Info.Name}, will keep trying");
       }
@@ -76,7 +76,7 @@ namespace JTSkimmer
       timer.Enabled = value;
     }
 
-    private void TryStart()
+    private void TryStart(bool logErrors)
     {
       try
       {
@@ -90,7 +90,7 @@ namespace JTSkimmer
       {
         Stop();
         Running = false;
-        Log.Error(ex, $"Error starting {GetType().Name}");
+        if (logErrors) Log.Error(ex, $"Error starting {GetType().Name}");
       }
     }
 
@@ -103,7 +103,7 @@ namespace JTSkimmer
         StateChanged?.Invoke(this, EventArgs.Empty);
       }
 
-      if (enabled && !Running) TryStart();
+      if (enabled && !Running) TryStart(false);
     }
 
     private void SetOrStoreFrequency(uint frequency)
