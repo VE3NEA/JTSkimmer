@@ -12,6 +12,7 @@ namespace JTSkimmer
   internal class SdrPlayDevice : BaseSdrDevice
   {
     private const float SDRPLAY_API_VERSION = 3.11f;
+    public const int SDRPLAY_RSP1B_ID = 6;
 
     private static readonly Dictionary<int, string> SdrplayModels = new Dictionary<int, string>()
     {
@@ -20,6 +21,7 @@ namespace JTSkimmer
       {SDRPLAY_RSP2_ID, "SDRplay RSP2" },
       {SDRPLAY_RSPduo_ID, "SDRplay RSP Duo" },
       {SDRPLAY_RSPdx_ID, "SDRplay RSP DX" },
+      {SDRPLAY_RSP1B_ID, "SDRplay RSP1b" },
     };
 
     private static bool ApiOK;
