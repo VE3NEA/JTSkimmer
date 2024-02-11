@@ -104,7 +104,7 @@ namespace JTSkimmer
     {
       if (string.IsNullOrEmpty(e.Data)) return;
 
-      Log.Error($"STDERR: '{e.Data}");
+      Log.Error($"STDERR in {Mode} runner: '{e.Data}");
     }
 
     protected void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
@@ -128,7 +128,7 @@ namespace JTSkimmer
         return;
 
       else
-        DecodedMessages.Add(e.Data.Trim());
+        DecodedMessages.Add(e.Data.Replace('\0', ' ').Trim());
     }
 
 
