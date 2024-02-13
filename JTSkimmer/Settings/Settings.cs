@@ -11,7 +11,6 @@ namespace JTSkimmer
     public List<SdrInfo> Sdrs = new();
     public List<ReceiverSettings> Receivers = new();
     public float? NoiseFloorZero;
-    public WaterfallSettings Waterfall = new();
     public NoiseBlankerSettings NoiseBlanker = new();
 
 
@@ -22,6 +21,9 @@ namespace JTSkimmer
 
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public AudioSettings Audio { get; set; } = new();
+
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    public WaterfallSettings Waterfall { get; set; } = new();
 
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public DecodingSettings Decoding { get; set; } = new();

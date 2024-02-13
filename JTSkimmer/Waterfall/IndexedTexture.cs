@@ -88,6 +88,7 @@ namespace JTSkimmer
       // TexSubImage2D in SharpGL accepts only int[], so give it floats in an int[] buffer
       Buffer.BlockCopy(data, 0, IntBuffer, 0, Width * sizeof(float));
 
+      // {!} todo: allow writing only when all initialization is finished
       gl.BindTexture(OpenGL.GL_TEXTURE_2D, textureIds[0]);
       CheckError(gl);
       gl.TexSubImage2D(OpenGL.GL_TEXTURE_2D, 0, 0, row, Width, 1, OpenGL.GL_LUMINANCE, OpenGL.GL_FLOAT, IntBuffer);

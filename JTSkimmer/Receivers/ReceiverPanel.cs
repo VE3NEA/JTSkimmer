@@ -55,7 +55,7 @@ namespace JTSkimmer
 
     internal void EnableDisable()
     {
-      bool mustEnable = ctx.Sdr != null && ctx.Sdr.Running && Receiver.IsValidOffset() && !ctx.MainForm.MustPause();
+      bool mustEnable = ctx.Settings.Waterfall.Enabled && ctx.Sdr != null && ctx.Sdr.Running && Receiver.IsValidOffset() && !ctx.MainForm.MustPause();
       Receiver.EnableDisable(mustEnable);
 
       if (WaterfallControl.Enabled != mustEnable)
@@ -63,6 +63,8 @@ namespace JTSkimmer
         WaterfallControl.Enabled = mustEnable;
         WaterfallControl.LastDrawTime = DateTime.MinValue; // reset PLL
       }
+
+      WaterfallControl.Visible = WaterfallControl.Enabled;
 
       UpdateLabels();
     }

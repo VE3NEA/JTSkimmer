@@ -88,6 +88,7 @@ namespace JTSkimmer
     private void StartSdr()
     {
       ctx.Sdr = BaseSdrDevice.CreateFromSettings(ctx.Settings.SelectedSdr());
+      ShowSdrLabel();
 
       if (ctx.Sdr != null)
       {
@@ -169,7 +170,7 @@ namespace JTSkimmer
     {
       SdrStatusLabel.ToolTipText = ctx.Sdr?.GetDesctiption() ?? "SDR not selected.\n\nClick here to select";
 
-      if (ctx.Sdr == null) SdrLedLabel.ForeColor = Color.Silver;
+      if (ctx.Sdr == null) SdrLedLabel.ForeColor = Color.Gray;
       else if (ctx.Sdr.Running) SdrLedLabel.ForeColor = Color.Lime;
       else SdrLedLabel.ForeColor = Color.Red;
     }
@@ -484,6 +485,7 @@ namespace JTSkimmer
       var rc = new SdrDevicesDialog(ctx).ShowDialog();
       Receiver.SdrSettings = ctx.Settings.SelectedSdr()?.Settings;
       StartSdr();
+      ShowSdrLabel();
     }
 
     private void WebsiteMNU_Click(object sender, EventArgs e)

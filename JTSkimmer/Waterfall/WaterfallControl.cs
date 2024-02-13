@@ -32,7 +32,7 @@ namespace JTSkimmer
 
     public int ScrollSpeed { get => spectraPerSecond; set => SetScrollSpeed(value); }
 
-    public bool Enabled;
+    public new bool Enabled;
 
 
 

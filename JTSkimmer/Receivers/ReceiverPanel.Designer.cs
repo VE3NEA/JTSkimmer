@@ -30,7 +30,6 @@
     {
       components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReceiverPanel));
-      WaterfallControl = new WaterfallControl();
       imageList1 = new ImageList(components);
       ToolTip = new ToolTip(components);
       CloseLabel = new Label();
@@ -45,23 +44,14 @@
       FrequencyLabel = new Label();
       ModeLabel = new Label();
       SlidersGlyph = new PictureBox();
+      panel10 = new Panel();
+      WaterfallControl = new WaterfallControl();
       panel1.SuspendLayout();
       ToolStrip.SuspendLayout();
       panel9.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)SlidersGlyph).BeginInit();
+      panel10.SuspendLayout();
       SuspendLayout();
-      // 
-      // WaterfallControl
-      // 
-      WaterfallControl.AllowDrop = true;
-      WaterfallControl.Dock = DockStyle.Fill;
-      WaterfallControl.Location = new Point(0, 72);
-      WaterfallControl.Name = "WaterfallControl";
-      WaterfallControl.ScrollSpeed = 0;
-      WaterfallControl.Size = new Size(188, 192);
-      WaterfallControl.TabIndex = 1;
-      WaterfallControl.DragDrop += ReceiverPanel_DragDrop;
-      WaterfallControl.DragEnter += ReceiverPanel_DragEnter;
       // 
       // imageList1
       // 
@@ -227,14 +217,37 @@
       SlidersGlyph.TabStop = false;
       SlidersGlyph.MouseDown += SlidersGlyph_MouseDown;
       // 
+      // panel10
+      // 
+      panel10.BackColor = Color.Gainsboro;
+      panel10.Controls.Add(WaterfallControl);
+      panel10.Dock = DockStyle.Fill;
+      panel10.Location = new Point(0, 72);
+      panel10.Name = "panel10";
+      panel10.Size = new Size(188, 192);
+      panel10.TabIndex = 20;
+      // 
+      // WaterfallControl
+      // 
+      WaterfallControl.AllowDrop = true;
+      WaterfallControl.Dock = DockStyle.Fill;
+      WaterfallControl.Location = new Point(0, 0);
+      WaterfallControl.Name = "WaterfallControl";
+      WaterfallControl.ScrollSpeed = 0;
+      WaterfallControl.Size = new Size(188, 192);
+      WaterfallControl.TabIndex = 2;
+      WaterfallControl.Visible = false;
+      WaterfallControl.DragDrop += ReceiverPanel_DragDrop;
+      WaterfallControl.DragEnter += ReceiverPanel_DragEnter;
+      // 
       // ReceiverPanel
       // 
       AllowDrop = true;
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       BorderStyle = BorderStyle.FixedSingle;
+      Controls.Add(panel10);
       Controls.Add(SlidersGlyph);
-      Controls.Add(WaterfallControl);
       Controls.Add(ModeLabel);
       Controls.Add(FrequencyLabel);
       Controls.Add(panel1);
@@ -249,6 +262,7 @@
       ToolStrip.PerformLayout();
       panel9.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)SlidersGlyph).EndInit();
+      panel10.ResumeLayout(false);
       ResumeLayout(false);
     }
 
@@ -285,8 +299,9 @@
     private Label CloseLabel;
     private Label FrequencyLabel;
     private Label ModeLabel;
-    public WaterfallControl WaterfallControl;
     private PictureBox SlidersGlyph;
     private Label Indexlabel;
+    private Panel panel10;
+    public WaterfallControl WaterfallControl;
   }
 }

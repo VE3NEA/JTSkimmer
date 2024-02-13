@@ -47,6 +47,7 @@ namespace JTSkimmer
     {
       ctx.Settings = (Settings)grid.SelectedObject;
       ApplyChangedSettings();
+      ctx.MainForm.EnableDisableWaterfalls();
     }
 
 

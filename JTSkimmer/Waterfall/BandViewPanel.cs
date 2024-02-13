@@ -29,9 +29,11 @@ namespace JTSkimmer
 
     internal void EnableDisable()
     {
-      bool enable = (ctx.Sdr?.Running ?? false) && !ctx.MainForm.MustPause();
+      bool enable = ctx.Settings.Waterfall.Enabled && (ctx.Sdr?.Running ?? false) && !ctx.MainForm.MustPause();
       WaterfallControl.Enabled = enable;
       WaterfallControl.LastDrawTime = DateTime.MinValue; // reset PLL
+
+      WaterfallControl.Visible = WaterfallControl.Enabled;
     }
 
     internal void SetWaterfallSpeed()
