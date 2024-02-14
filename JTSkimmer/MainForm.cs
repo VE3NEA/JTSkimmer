@@ -56,6 +56,8 @@ namespace JTSkimmer
         SetDefaultDockingLayout();
 
       StartSdr();
+      ApplySettingsToAllWaterfalls();
+      EnableDisableWaterfalls();
     }
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

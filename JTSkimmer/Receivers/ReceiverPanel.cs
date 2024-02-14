@@ -64,7 +64,7 @@ namespace JTSkimmer
         WaterfallControl.LastDrawTime = DateTime.MinValue; // reset PLL
       }
 
-      WaterfallControl.Visible = WaterfallControl.Enabled;
+      WaterfallControl.Visible = ctx.Settings.Waterfall.Enabled;
 
       UpdateLabels();
     }

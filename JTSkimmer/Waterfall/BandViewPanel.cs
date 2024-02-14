@@ -33,7 +33,7 @@ namespace JTSkimmer
       WaterfallControl.Enabled = enable;
       WaterfallControl.LastDrawTime = DateTime.MinValue; // reset PLL
 
-      WaterfallControl.Visible = WaterfallControl.Enabled;
+      WaterfallControl.Visible = ctx.Settings.Waterfall.Enabled;
     }
 
     internal void SetWaterfallSpeed()
