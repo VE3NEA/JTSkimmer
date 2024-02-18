@@ -156,21 +156,31 @@ namespace JTSkimmer
       while ((err = gl.GetError()) != OpenGL.GL_NO_ERROR)
         if (log)
         {
-//#if DEBUG
-          string errorText = gl.ErrorString(err);
-          System.Diagnostics.StackTrace stackTrace = new(true);
-          Log.Error($"{errorText}\n{stackTrace}");
-//#endif
+          string stackTrace = new System.Diagnostics.StackTrace(true).ToString();
+          if (IsLoggableError(stackTrace)) 
+            Log.Error($"{gl.ErrorString(err)}\n{stackTrace}");
         }
+    }
+
+    // AppendSpectrum may be called many times per second.
+    // If an error occurs inside that method, do not log it every time
+    private static DateTime NextLogErrortime = DateTime.MinValue;
+    private static bool IsLoggableError(string stackTrace)
+    {
+      if (!stackTrace.Contains("AppendSpectrum")) return true;
+
+      if (DateTime.UtcNow < NextLogErrortime) return false;
+      NextLogErrortime = DateTime.UtcNow + TimeSpan.FromSeconds(30);
+      return true;
     }
 
 
 
 
-      //----------------------------------------------------------------------------------------------
-      //                                      draw
-      //----------------------------------------------------------------------------------------------
-      private void OpenglControl_OpenGLDraw(object sender, SharpGL.RenderEventArgs args)
+    //----------------------------------------------------------------------------------------------
+    //                                      draw
+    //----------------------------------------------------------------------------------------------
+    private void OpenglControl_OpenGLDraw(object sender, SharpGL.RenderEventArgs args)
     {
       var gl = OpenglControl.OpenGL;
 
