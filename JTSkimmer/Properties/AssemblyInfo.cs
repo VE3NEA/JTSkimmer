@@ -4,6 +4,6 @@
 [assembly: AssemblyConfiguration("Debug")]
 [assembly: AssemblyProduct("JT Skimmer")]
 [assembly: AssemblyTitle("JT Skimmer")]
-[assembly: AssemblyVersion("0.95.*")]
+[assembly: AssemblyVersion("0.96.*")]
 [assembly: System.Runtime.Versioning.TargetPlatform("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatform("Windows7.0")]

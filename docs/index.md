@@ -30,9 +30,7 @@ are preliminary:
   Since the program runs multipe decoders,
   you will want to use a CPU with more than one core;
 
-- **graphics card:** must support OpenGL 3.3 or higher. 
-  [Some Mini-PC](https://www.amazon.com/ACEMAGIC-Computer-3-Screen-Bluetooth-Computers/dp/B0CQJQPZJX)
-  are unable to display the waterfall in JT Skimmer.
+- **graphics card:** must support OpenGL 3.3 or higher.
 
 - **operating system:** Windows 10, 64-bit. Please try it on Windows 11. There is no 32-bit
   version, the computers fast enough to run multiple decoders are all 64-bit;
@@ -48,3 +46,8 @@ are preliminary:
   - [WSJT-X](https://wsjt.sourceforge.io/wsjtx.html): required, 
   - [JTDX](https://sourceforge.net/projects/jtdx/): optional.
   
+<br>
+
+### Contact the Author:
+
+![email](/assets/images/email_me.png)

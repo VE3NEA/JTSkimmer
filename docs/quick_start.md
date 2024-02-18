@@ -82,3 +82,25 @@ cover the first 360 kHz of the 10 m band. Click on OK.
 - Minimize the JT Skimmer window. It will disappear from the Task Bar and hide in the System Tray:
 
   ![System Tray Icon](assets/images/systray.png)
+
+## Support
+
+If you need help with JT Skimmer, please send an email to this address:
+
+![alt text](assets/images/email_me.png)
+
+Please include:
+
+- a detailed description of the problem: what you are trying to do, what you expect to happen, and what happens instead;
+
+- a screenshot illustrating the problem;
+
+- the error log.
+
+To find the error log, click on _Help / User Data Folder_ in the menu to open the data folder, then look in the _Logs_ sub-folder.
+
+Another way to open the data folder is to type this in File Explorer:
+
+_%appdata%\Afreet\Products\JTSkimmer_
+
+If the error file is large, please send it zipped.
