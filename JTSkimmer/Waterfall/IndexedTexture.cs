@@ -29,7 +29,6 @@ namespace JTSkimmer
       CheckError(gl);
 
       ClearBitmap();
-      //SetPalette();
     }
 
     public void SetPalette(int[]? palette = null)
@@ -47,27 +46,9 @@ namespace JTSkimmer
       gl.BindTexture(OpenGL.GL_TEXTURE_2D, textureIds[1]);
       CheckError(gl, false); // produces false positives
 
-      gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGB, PALETTE_SIZE, 1, 0, OpenGL.GL_BGRA,
-        OpenGL.GL_UNSIGNED_BYTE, palette);
+      gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGB, PALETTE_SIZE, 1, 0, 
+        OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, palette);
       CheckError(gl);
-    }
-
-    public void SetBitmap(Bitmap bmp)
-    {
-      CheckError(gl, false);
-
-      Debug.Assert(bmp.Width == Width && bmp.Height == Height);
-
-      var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height),
-        ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-      gl.BindTexture(OpenGL.GL_TEXTURE_2D, textureIds[0]);
-      CheckError(gl);
-      gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGB, bmp.Width, bmp.Height, 0, 
-        OpenGL.GL_R32F, OpenGL.GL_UNSIGNED_BYTE, data.Scan0);
-      CheckError(gl);
-
-      bmp.UnlockBits(data);
     }
 
     public void ClearBitmap()
@@ -76,8 +57,8 @@ namespace JTSkimmer
 
       gl.BindTexture(OpenGL.GL_TEXTURE_2D, textureIds[0]);
       CheckError(gl);
-      gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_R32F, Width, Height, 0, OpenGL.GL_BGRA,
-        OpenGL.GL_UNSIGNED_BYTE, (byte[]?)null);
+      gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RED, Width, Height, 0, 
+        OpenGL.GL_RED, OpenGL.GL_FLOAT, (byte[]?)null);
       CheckError(gl);
     }
 
@@ -88,10 +69,11 @@ namespace JTSkimmer
       // TexSubImage2D in SharpGL accepts only int[], so give it floats in an int[] buffer
       Buffer.BlockCopy(data, 0, IntBuffer, 0, Width * sizeof(float));
 
-      // {!} todo: allow writing only when all initialization is finished
       gl.BindTexture(OpenGL.GL_TEXTURE_2D, textureIds[0]);
       CheckError(gl);
-      gl.TexSubImage2D(OpenGL.GL_TEXTURE_2D, 0, 0, row, Width, 1, OpenGL.GL_LUMINANCE, OpenGL.GL_FLOAT, IntBuffer);
+
+      gl.TexSubImage2D(OpenGL.GL_TEXTURE_2D, 0, 0, row, Width, 1, 
+        OpenGL.GL_RED, OpenGL.GL_FLOAT, IntBuffer);
       CheckError(gl);
     }
 
