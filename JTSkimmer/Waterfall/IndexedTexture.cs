@@ -57,7 +57,8 @@ namespace JTSkimmer
 
       gl.BindTexture(OpenGL.GL_TEXTURE_2D, textureIds[0]);
       CheckError(gl);
-      gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_R32F, Width, Height, 0, OpenGL.GL_RED, OpenGL.GL_FLOAT, (byte[]?)null);
+      gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_R32F, Width, Height, 0, 
+        OpenGL.GL_RED, OpenGL.GL_FLOAT, (byte[]?)null);
 
       CheckError(gl);
     }

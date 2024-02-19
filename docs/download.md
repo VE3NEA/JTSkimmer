@@ -5,7 +5,7 @@ title: Download
 
 ### Current Version
 
-[JTSkimmer.zip v.0.96 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.96-beta/JTSkimmer.zip)
+[JTSkimmer.zip v.0.97 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.97-beta/JTSkimmer.zip)
 
 <br>
 ### Previous Versions
@@ -14,6 +14,10 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 
 <br>
 ### Release Notes
+
+#### v.0.97 Beta
+
+- fixed waterfall colors
 
 #### v.0.96 Beta
 
