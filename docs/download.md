@@ -17,7 +17,7 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 
 #### v.0.96 Beta
 
-- fixed the error that prevented the waterfall to work on some video cards
+- fixed the error that prevented the waterfall from working on some video cards
 
 - added support of [SDRplay RSP1b](https://www.sdrplay.com/rsp1b/)
 
