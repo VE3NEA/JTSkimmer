@@ -186,7 +186,11 @@ namespace JTSkimmer
       var uninstallKey = Registry.LocalMachine.OpenSubKey(UninstallKeyPath);
       if (uninstallKey == null) return null;
       var subkeys = uninstallKey.GetSubKeyNames().Where(k => k.StartsWith(label));
-      var paths = subkeys.Select(k => uninstallKey.OpenSubKey(k)?.GetValue("DisplayIcon")?.ToString());
+
+      var paths = subkeys
+        .Select(k => uninstallKey.OpenSubKey(k)?.GetValue("DisplayIcon"))
+        .Where(value => value != null) // This filters out null values  
+        .Select(nonNullValue => nonNullValue.ToString());
 
       // replace "wsjtx.exe" with "jt9.exe"
       paths = paths.Select(p => Path.Combine(Path.GetDirectoryName(p), exeName));

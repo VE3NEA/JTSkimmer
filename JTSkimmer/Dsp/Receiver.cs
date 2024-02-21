@@ -122,6 +122,8 @@ namespace JTSkimmer
       else
         SetUpJtdxDecoding();
 
+      if (Runner == null) return;
+
       Runner.index = index;
       Runner.MessagesDecoded += Runner_MessagesDecoded;
       TimeSlot = new TimeSlotBuffer<float>(Runner.SecondsPerSlot);
