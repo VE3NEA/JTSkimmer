@@ -3,6 +3,7 @@ using MathNet.Numerics;
 using VE3NEA;
 using VE3NEA.HamCockpit.DspFun;
 using WeifenLuo.WinFormsUI.Docking;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace JTSkimmer
 {
@@ -493,6 +494,11 @@ namespace JTSkimmer
     private void WebsiteMNU_Click(object sender, EventArgs e)
     {
       Process.Start(new ProcessStartInfo("https://ve3nea.github.io/JTSkimmer") { UseShellExecute = true });
+    }
+
+    private void EmailTheAuthorMNU_Click(object sender, EventArgs e)
+    {
+      Process.Start(new ProcessStartInfo("mailto:ve3nea@dxatlas.com") { UseShellExecute = true });
     }
 
     private void UserDataFolderMNU_Click(object sender, EventArgs e)

@@ -86,11 +86,6 @@ namespace JTSkimmer
       return $"{Application.ProductName} {version.Major}.{version.Minor} Beta";
     }
 
-    internal static void SendEmail(string email)
-    {
-      Process.Start($"mailto:{email}");
-    }
-
     // avoid warning when not awaiting for an async task. Usage: DoSomethingAsync().DoNotAwait();
     // https://stackoverflow.com/questions/14903887
     public static void DoNotAwait(this Task task) { }
