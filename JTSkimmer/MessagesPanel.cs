@@ -23,6 +23,7 @@ namespace JTSkimmer
       this.ctx = ctx;
       ctx.MessagesPanel = this;
       ctx.MainForm.ViewMessagesMNU.Checked = true;
+      ctx.MessageDistributor.WsjtxUdpSender.HighlightCallsignReceived += WsjtxUdpSender_HighlightCallsignReceived;
 
       ClearBtn.Font = ctx.AwesomeFont14;
       ClearBtn.Text = FontAwesomeIcons.Trash;
@@ -30,8 +31,14 @@ namespace JTSkimmer
       ScrollDownBtn.Text = FontAwesomeIcons.ArrowDown;
     }
 
+    private void WsjtxUdpSender_HighlightCallsignReceived(object? sender, HighlightCallsignEventArgs e)
+    {
+      
+    }
+
     private void MessagesPanel_FormClosing(object sender, FormClosingEventArgs e)
     {
+      ctx.MessageDistributor.WsjtxUdpSender.HighlightCallsignReceived -= WsjtxUdpSender_HighlightCallsignReceived;
       ctx.MessagesPanel = null;
       ctx.MainForm.ViewMessagesMNU.Checked = false;
     }

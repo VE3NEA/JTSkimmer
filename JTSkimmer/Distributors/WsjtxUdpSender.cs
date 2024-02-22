@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using JTSkimmer.Distributors;
 using Serilog;
+using VE3NEA;
 using WsjtxUtils.WsjtxMessages;
 using WsjtxUtils.WsjtxMessages.Messages;
 
@@ -13,9 +14,13 @@ namespace JTSkimmer
     private UdpClient? UdpClient;
     private readonly System.Timers.Timer Timer = new(15000);
     private byte[] HeartbeatBytes;
+    private IPEndPoint EndPoint;
+    private CancellationTokenSource CancellationTokenSource;
 
     public ushort Port = 7310;
     public string Host = "127.0.0.1";
+    public event EventHandler<HighlightCallsignEventArgs>? HighlightCallsignReceived;
+
     public bool Active { get => UdpClient != null; }
     public string LastError { get; protected set; }
 
@@ -37,12 +42,15 @@ namespace JTSkimmer
       try
       {
         var ipAddress = IPAddress.Parse(Host);
-        if (Utils.IsAddressMulticast(ipAddress)) UdpClient.JoinMulticastGroup(ipAddress);
-        UdpClient.Connect(new IPEndPoint(ipAddress, Port));
+        EndPoint = new IPEndPoint(ipAddress, Port);
         SendHeartbeatMessage();
+
+        CancellationTokenSource = new CancellationTokenSource();
+        StartReceiveLoop(CancellationTokenSource.Token).DoNotAwait();
+
         Timer.Start();
       }
-      catch (Exception e) 
+      catch (Exception e)
       {
         Stop();
         LastError = e.Message;
@@ -53,6 +61,7 @@ namespace JTSkimmer
     public void Stop()
     {
       Timer.Stop();
+      CancellationTokenSource?.Cancel();
       UdpClient?.Dispose();
       UdpClient = null;
     }
@@ -64,7 +73,7 @@ namespace JTSkimmer
 
     private void SendHeartbeatMessage()
     {
-      UdpClient?.Send(HeartbeatBytes);
+      UdpClient?.Send(HeartbeatBytes, EndPoint);
     }
 
     public void SendDecodedMessages(IEnumerable<MessageInfo> messages)
@@ -75,11 +84,11 @@ namespace JTSkimmer
       var status = new WritableStatus();
       status.Id = Utils.GetAppName();
       status.DialFrequencyInHz = messages.First().Message.Frequency;
-      UdpClient.Send(MessageToBytes(status));
+      UdpClient.Send(MessageToBytes(status), EndPoint);
 
       // decoded messages
       foreach (var message in messages)
-        UdpClient.Send(MessageToBytes(message.Decode));
+        UdpClient.Send(MessageToBytes(message.Decode), EndPoint);
     }
 
     private byte[] MessageToBytes(IWsjtxDirectionIn message)
@@ -95,6 +104,49 @@ namespace JTSkimmer
     public void Dispose()
     {
       Stop();
+    }
+
+    public async Task StartReceiveLoop(CancellationToken token)
+    {
+      try
+      {
+        while (!token.IsCancellationRequested)
+        {
+          var result = await UdpClient.ReceiveAsync(token);
+
+          var memory = result.Buffer.AsMemory();
+          var reader = new WsjtxMessageReader(memory);
+          MessageType messageType = reader.PeekMessageType();
+          if (messageType != MessageType.HighlightCallsign) continue;
+
+          var message = new ReadableHighlightCallsign();
+          message.ReadMessage(reader);
+
+          HighlightCallsignReceived?.Invoke(this, new HighlightCallsignEventArgs(message));
+        }
+      }
+      catch (OperationCanceledException)
+      {
+        return;
+      }
+      catch (Exception e)
+      {
+        Log.Error(e, "Error in UDP listener");
+      }
+    }
+  }
+
+  internal class HighlightCallsignEventArgs
+  {
+    public string Callsign { get; private set; }
+    public Color BackColor { get; private set; }
+    public Color ForeColor { get; private set; }
+
+    public HighlightCallsignEventArgs(ReadableHighlightCallsign message)
+    {
+      Callsign = message.Callsign;
+      BackColor = message.BackColor;
+      ForeColor = message.ForeColor;
     }
   }
 }
