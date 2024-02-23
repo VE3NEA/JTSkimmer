@@ -82,10 +82,12 @@
       // 
       listBox.Dock = DockStyle.Fill;
       listBox.DrawMode = DrawMode.OwnerDrawFixed;
-      listBox.Font = new Font("Lucida Console", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+      listBox.Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point);
+      listBox.IntegralHeight = false;
       listBox.ItemHeight = 16;
       listBox.Location = new Point(0, 25);
       listBox.Name = "listBox";
+      listBox.SelectionMode = SelectionMode.None;
       listBox.Size = new Size(800, 425);
       listBox.TabIndex = 1;
       listBox.Scroll += listBox_Scroll;

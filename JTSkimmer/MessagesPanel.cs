@@ -1,4 +1,7 @@
-﻿using FontAwesome;
+﻿using System.Drawing;
+using System.Windows.Forms;
+using FontAwesome;
+using Newtonsoft.Json.Linq;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace JTSkimmer
@@ -11,6 +14,7 @@ namespace JTSkimmer
     private Point lastMouseLocation;
     private bool AutoScrollMode = true;
     private bool Frozen;
+    private MessageInfo? HotItem;
 
     internal MessagesPanel()
     {
@@ -31,11 +35,6 @@ namespace JTSkimmer
       ScrollDownBtn.Text = FontAwesomeIcons.ArrowDown;
     }
 
-    private void WsjtxUdpSender_HighlightCallsignReceived(object? sender, HighlightCallsignEventArgs e)
-    {
-      
-    }
-
     private void MessagesPanel_FormClosing(object sender, FormClosingEventArgs e)
     {
       ctx.MessageDistributor.WsjtxUdpSender.HighlightCallsignReceived -= WsjtxUdpSender_HighlightCallsignReceived;
@@ -49,13 +48,17 @@ namespace JTSkimmer
     //--------------------------------------------------------------------------------------------------------------
     //                                                items
     //--------------------------------------------------------------------------------------------------------------
-    internal void AddMessages(DecodedMessage[] messages)
+    internal void AddMessages(MessageInfo[] messages)
     {
       BeginInvoke(() =>
       {
         listBox.BeginUpdate();
 
-        foreach (DecodedMessage msg in messages) listBox.Items.Add(msg.ToString());
+        foreach (MessageInfo msg in messages)
+        {
+          TokenizeMessage(msg);
+          listBox.Items.Add(msg);
+        }
 
 
         while (listBox.Items.Count > MAX_LINE_COUNT) listBox.Items.RemoveAt(0);
@@ -67,12 +70,58 @@ namespace JTSkimmer
       });
     }
 
+    private readonly char[] space = new char[] { ' ' };
+
+    private void TokenizeMessage(MessageInfo msg)
+    {
+      string text = msg.Message.ToString();
+
+      msg.Tokens.Add(new DisplayToken(text[0..36]));
+      msg.Tokens.AddRange(text[36..].Split(space).Select(s => new DisplayToken(s)).ToList());
+    }
+
+    private void WsjtxUdpSender_HighlightCallsignReceived(object? sender, HighlightCallsignEventArgs e)
+    {
+      if (listBox.Items.Count == 0) return;
+      var info = (MessageInfo)listBox.Items[listBox.Items.Count-1];
+
+      string slot = info.Message.ToString()[5..13];
+
+      for (int i = listBox.Items.Count - 1; i >= 0; i--)
+      {
+        info = (MessageInfo)listBox.Items[i];
+        if (info.Message.ToString()[5..13] != slot) break;
+        if (info.Parse.DECallsign != e.Callsign && info.Parse.DECallsign != $"<{e.Callsign}>") continue;
+
+        var token = info.Tokens.FirstOrDefault(t => t.text == e.Callsign);
+        if (token == null) continue;
+        token.bgBrush = new SolidBrush(e.BackColor);
+        token.fgBrush = new SolidBrush(e.ForeColor);
+      }
+
+      listBox.Invalidate();
+    }
+
+    private MessageInfo? GetItemUnderCursor()
+    {
+      Point p = listBox.PointToClient(Cursor.Position);
+      int index = listBox.IndexFromPoint(p);
+      if (index < 0) return null;
+      return (MessageInfo)listBox.Items[index];
+    }
+
+
+
+
+    //--------------------------------------------------------------------------------------------------------------
+    //                                                counts
+    //--------------------------------------------------------------------------------------------------------------
     private Dictionary<string, int> Counts = new();
 
-    private void UpdateCounts(DecodedMessage[] messages)
+    private void UpdateCounts(MessageInfo[] messages)
     {
-      foreach (DecodedMessage msg in messages)
-        Counts[msg.Mode] = Counts.GetValueOrDefault(msg.Mode) + 1;
+      foreach (MessageInfo msg in messages)
+        Counts[msg.Message.Mode] = Counts.GetValueOrDefault(msg.Message.Mode) + 1;
 
       ShowCounts();
     }
@@ -82,14 +131,6 @@ namespace JTSkimmer
       CountsLabel.Text = string.Join("", Counts.Select(m => $"   {m.Key} ({m.Value:N0})"));
     }
 
-    private void listBox_DrawItem(object sender, DrawItemEventArgs e)
-    {
-      if (listBox.Items.Count > 0)
-      {
-        e.DrawBackground();
-        e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font, new SolidBrush(listBox.ForeColor), new PointF(e.Bounds.X, e.Bounds.Y));
-      }
-    }
 
 
 
@@ -102,11 +143,17 @@ namespace JTSkimmer
       lastMouseLocation = e.Location;
 
       Freeze(true);
+
+      // hot tracking
+      var newHotItem = GetItemUnderCursor();
+      if (newHotItem != HotItem) listBox.Invalidate();
+      HotItem = newHotItem;
     }
 
     private void listBox_MouseLeave(object sender, EventArgs e)
     {
       Freeze(false);
+      HotItem = null;
       listBox.Invalidate();
     }
 
@@ -186,6 +233,48 @@ namespace JTSkimmer
     {
       listBox.ScrollToBottom();
       UpdateAutoScrollMode();
+    }
+
+
+
+
+    //--------------------------------------------------------------------------------------------------------------
+    //                                                paint
+    //--------------------------------------------------------------------------------------------------------------
+    private static Brush RxBkBrush = new SolidBrush(Color.White);
+    private static Brush ToMeBkBrush = new SolidBrush(Color.FromArgb(255, 175, 175));
+    private static Brush HotBkBrush = new SolidBrush(Color.FromArgb(20, 0, 0, 255));
+    private readonly string[] CqWords = new string[] { "CQ", "73", "RR73" };
+
+    private void listBox_DrawItem(object sender, DrawItemEventArgs e)
+    {
+      if (e.Index < 0) return;
+
+      var info = (MessageInfo)listBox.Items[e.Index];
+      bool toMe = info.Parse.DXCallsign == ctx.Settings.User.Call;
+
+      var spaceWidth = e.Graphics.MeasureString("__", e.Font).Width - e.Graphics.MeasureString("_", e.Font).Width;
+      PointF p = new PointF(e.Bounds.Location.X, e.Bounds.Location.Y);
+
+      Brush bgBrush = RxBkBrush;
+      if (toMe) bgBrush = ToMeBkBrush;
+      e.Graphics.FillRectangle(bgBrush, e.Bounds);
+      if (info == HotItem) e.Graphics.FillRectangle(HotBkBrush, e.Bounds);
+
+      foreach (var token in info.Tokens)
+      {
+        SizeF size = e.Graphics.MeasureString(token.text, e.Font);
+        RectangleF rect = new RectangleF(p, size);
+
+        bgBrush = token.bgBrush;
+        if (CqWords.Contains(token.text)) bgBrush = Brushes.Yellow;
+
+        e.Graphics.FillRectangle(bgBrush, rect);
+        e.Graphics.DrawString(token.text, e.Font, token.fgBrush, p);
+
+        SizeF sizeWithSpaces = e.Graphics.MeasureString(token.text.Replace(' ', '_'), e.Font);
+        p.X += sizeWithSpaces.Width + spaceWidth;
+      }
     }
   }
 }

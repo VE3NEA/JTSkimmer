@@ -1,24 +1,9 @@
 ﻿using JTSkimmer.Distributors;
 using VE3NEA;
 using VE3NEA.PskrDxClusterService;
-using WsjtxUtils.WsjtxMessages.QsoParsing;
 
 namespace JTSkimmer
 {
-  public struct MessageInfo
-  {
-    internal DecodedMessage Message;
-    internal WritableDecode Decode;
-    internal WsjtxQso Parse;
-    internal MessageInfo(DecodedMessage message)
-    {
-      Message = message;
-      Decode = MessageDistributor.MessageToDecode(message.Message, message.Utc);
-      Parse = WsjtxQsoParser.ParseDecode(Decode);
-    }
-
-    public string Signature { get => $"{Parse.DECallsign}{Message.Frequency / 1000}{Message.Mode}"; }
-  }
 
   internal class MessageDistributor : ThreadedProcessor<DecodedMessage>
   {
@@ -73,14 +58,15 @@ namespace JTSkimmer
 
     protected override void Process(DataEventArgs<DecodedMessage> args)
     {
+      var messages = args.Data.Select(m => new MessageInfo(m)).ToArray();
+
       // show on screen
-      ctx.MessagesPanel?.AddMessages(args.Data);
+      ctx.MessagesPanel?.AddMessages(messages);
 
       // save to file
       SaveToFile(args);
 
       // send all decodes as wsjtx udp packets
-      var messages = args.Data.Select(m => new MessageInfo(m)).ToArray();
       WsjtxUdpSender.SendDecodedMessages(messages);
 
       // skip bad decodes
