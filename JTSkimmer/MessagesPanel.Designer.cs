@@ -33,6 +33,7 @@
       toolStripEx1 = new ToolStripEx();
       ClearBtn = new ToolStripButton();
       ScrollDownBtn = new ToolStripButton();
+      ViewArchiveBtn = new ToolStripButton();
       CountsLabel = new ToolStripLabel();
       listBox = new ListBoxEx();
       freezeTimer = new System.Windows.Forms.Timer(components);
@@ -41,7 +42,7 @@
       // 
       // toolStripEx1
       // 
-      toolStripEx1.Items.AddRange(new ToolStripItem[] { ClearBtn, ScrollDownBtn, CountsLabel });
+      toolStripEx1.Items.AddRange(new ToolStripItem[] { ClearBtn, ScrollDownBtn, ViewArchiveBtn, CountsLabel });
       toolStripEx1.Location = new Point(0, 0);
       toolStripEx1.Name = "toolStripEx1";
       toolStripEx1.Size = new Size(800, 25);
@@ -71,6 +72,18 @@
       ScrollDownBtn.Text = "=";
       ScrollDownBtn.ToolTipText = "Scroll to Bottom";
       ScrollDownBtn.Click += ScrollDownBtn_Click;
+      // 
+      // ViewArchiveBtn
+      // 
+      ViewArchiveBtn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+      ViewArchiveBtn.ForeColor = Color.SteelBlue;
+      ViewArchiveBtn.Image = (Image)resources.GetObject("ViewArchiveBtn.Image");
+      ViewArchiveBtn.ImageTransparentColor = Color.Magenta;
+      ViewArchiveBtn.Name = "ViewArchiveBtn";
+      ViewArchiveBtn.Size = new Size(23, 22);
+      ViewArchiveBtn.Text = "=";
+      ViewArchiveBtn.ToolTipText = "View Archive";
+      ViewArchiveBtn.Click += ViewArchiveBtn_Click;
       // 
       // CountsLabel
       // 
@@ -127,5 +140,6 @@
     private ListBoxEx listBox;
     private System.Windows.Forms.Timer freezeTimer;
     private ToolStripLabel CountsLabel;
+    private ToolStripButton ViewArchiveBtn;
   }
 }

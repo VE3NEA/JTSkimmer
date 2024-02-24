@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 using Devcorp.Controls.Design;
 using FontAwesome;
@@ -34,6 +35,8 @@ namespace JTSkimmer
       ClearBtn.Text = FontAwesomeIcons.Trash;
       ScrollDownBtn.Font = ctx.AwesomeFont14;
       ScrollDownBtn.Text = FontAwesomeIcons.ArrowDown;
+      ViewArchiveBtn.Font = ctx.AwesomeFont14;
+      ViewArchiveBtn.Text = FontAwesomeIcons.Folder;
     }
 
     private void MessagesPanel_FormClosing(object sender, FormClosingEventArgs e)
@@ -84,9 +87,9 @@ namespace JTSkimmer
 
       msg.Tokens[1].bgBrush = BrushFromSnr(msg.Tokens[1].text, Color.Red);
 
-      for (int i=2; i<msg.Tokens.Count; i++) 
+      for (int i = 2; i < msg.Tokens.Count; i++)
         if (CqWords.Contains(msg.Tokens[i].text))
-          msg.Tokens[i].bgBrush = Brushes.Yellow;        
+          msg.Tokens[i].bgBrush = Brushes.Yellow;
     }
 
     private static Brush BrushFromSnr(string snrString, Color color)
@@ -104,7 +107,7 @@ namespace JTSkimmer
     private void WsjtxUdpSender_HighlightCallsignReceived(object? sender, HighlightCallsignEventArgs e)
     {
       if (listBox.Items.Count == 0) return;
-      var info = (MessageInfo)listBox.Items[listBox.Items.Count-1];
+      var info = (MessageInfo)listBox.Items[listBox.Items.Count - 1];
 
       string slot = info.Message.ToString()[5..13];
 
@@ -254,6 +257,11 @@ namespace JTSkimmer
     {
       listBox.ScrollToBottom();
       UpdateAutoScrollMode();
+    }
+
+    private void ViewArchiveBtn_Click(object sender, EventArgs e)
+    {
+      Process.Start("explorer.exe", Path.Combine(Utils.GetUserDataFolder(), "Messages"));
     }
 
 

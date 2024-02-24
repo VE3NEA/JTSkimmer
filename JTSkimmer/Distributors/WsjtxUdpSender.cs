@@ -16,7 +16,8 @@ namespace JTSkimmer
     private byte[] HeartbeatBytes;
     private IPEndPoint EndPoint;
     private CancellationTokenSource CancellationTokenSource;
-
+    
+    public static readonly string UniqueId = Utils.GetAppName();
     public ushort Port = 7310;
     public string Host = "127.0.0.1";
     public event EventHandler<HighlightCallsignEventArgs>? HighlightCallsignReceived;
@@ -26,7 +27,7 @@ namespace JTSkimmer
 
     public WsjtxUdpSender()
     {
-      HeartbeatBytes = MessageToBytes(new Heartbeat(Utils.GetAppName(), "1.0", "0.0"));
+      HeartbeatBytes = MessageToBytes(new Heartbeat(UniqueId, "1.0", "0.0"));
       Timer.Elapsed += Timer_Elapsed;
     }
 
@@ -82,7 +83,7 @@ namespace JTSkimmer
 
       // status datagram with receiver frequency
       var status = new WritableStatus();
-      status.Id = Utils.GetAppName();
+      status.Id = UniqueId;
       status.DialFrequencyInHz = messages.First().Message.Frequency;
       UdpClient.Send(MessageToBytes(status), EndPoint);
 

@@ -99,7 +99,7 @@ namespace JTSkimmer
     public static WritableDecode MessageToDecode(string message, DateTime receivedAt)
     {
       var decode = new WritableDecode();
-      decode.Id = Utils.GetAppName();
+      decode.Id = WsjtxUdpSender.UniqueId;
       decode.New = true;
       decode.Time = (uint)((DateTimeOffset)receivedAt).ToUnixTimeSeconds();
       decode.Snr = int.Parse(message.Substring(7, 3));
