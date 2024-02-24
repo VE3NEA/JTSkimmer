@@ -27,6 +27,12 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	  <DebugType>full</DebugType>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="SDR Devices\SdrplayApi\**" />
+	  <EmbeddedResource Remove="SDR Devices\SdrplayApi\**" />
+	  <None Remove="SDR Devices\SdrplayApi\**" />
+	</ItemGroup>
 
   <ItemGroup>
     <Content Remove="C:\Users\Alex\.nuget\packages\sharpgl.winforms\3.1.1\contentFiles\any\netcoreapp3.1\SharpGL.ico" />
@@ -34,14 +40,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\Vendor\fa2cs\FontAwesomeIcons.cs" Link="Controls\FontAwesomeIcons.cs" />
-    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRplayAPI_Callback.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_Callback.cs" />
-    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRPlayAPI_Main.cs" Link="SDR Devices\SdrplayApi\SDRPlayAPI_Main.cs" />
-    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRplayAPI_Tuner.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_Tuner.cs" />
-    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSP1a.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSP1a.cs" />
-    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSP2.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSP2.cs" />
-    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSPduo.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSPduo.cs" />
-    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSPdx.cs" Link="SDR Devices\SdrplayApi\SDRplayAPI_RSPdx.cs" />
+    <Compile Include="..\Vendor\ColorSpace\CIELab.cs" Link="Vendor\ColorSpace\CIELab.cs" />
+    <Compile Include="..\Vendor\ColorSpace\CIEXYZ.cs" Link="Vendor\ColorSpace\CIEXYZ.cs" />
+    <Compile Include="..\Vendor\ColorSpace\CMYK.cs" Link="Vendor\ColorSpace\CMYK.cs" />
+    <Compile Include="..\Vendor\ColorSpace\ColorSpaceHelper.cs" Link="Vendor\ColorSpace\ColorSpaceHelper.cs" />
+    <Compile Include="..\Vendor\ColorSpace\HSB.cs" Link="Vendor\ColorSpace\HSB.cs" />
+    <Compile Include="..\Vendor\ColorSpace\HSL.cs" Link="Vendor\ColorSpace\HSL.cs" />
+    <Compile Include="..\Vendor\ColorSpace\RGB.cs" Link="Vendor\ColorSpace\RGB.cs" />
+    <Compile Include="..\Vendor\ColorSpace\YUV.cs" Link="Vendor\ColorSpace\YUV.cs" />
+    <Compile Include="..\Vendor\fa2cs\FontAwesomeIcons.cs" Link="Vendor\FontAwesomeIcons.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRplayAPI_Callback.cs" Link="Vendor\SdrplayApi\SDRplayAPI_Callback.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRPlayAPI_Main.cs" Link="Vendor\SdrplayApi\SDRPlayAPI_Main.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Common_API\SDRplayAPI_Tuner.cs" Link="Vendor\SdrplayApi\SDRplayAPI_Tuner.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSP1a.cs" Link="Vendor\SdrplayApi\SDRplayAPI_RSP1a.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSP2.cs" Link="Vendor\SdrplayApi\SDRplayAPI_RSP2.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSPduo.cs" Link="Vendor\SdrplayApi\SDRplayAPI_RSPduo.cs" />
+    <Compile Include="..\Vendor\UN7ZO.SDRPlayApi\Devices_API\SDRplayAPI_RSPdx.cs" Link="Vendor\SdrplayApi\SDRplayAPI_RSPdx.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -118,7 +132,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SDR Devices\SdrplayApi\" />
+    <Folder Include="Vendor\ColorSpace\" />
+    <Folder Include="Vendor\SdrplayApi\" />
   </ItemGroup>
 
 </Project>

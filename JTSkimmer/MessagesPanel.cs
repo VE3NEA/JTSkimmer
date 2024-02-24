@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using Devcorp.Controls.Design;
 using FontAwesome;
 using Newtonsoft.Json.Linq;
 using WeifenLuo.WinFormsUI.Docking;
@@ -71,13 +72,33 @@ namespace JTSkimmer
     }
 
     private readonly char[] space = new char[] { ' ' };
+    private readonly string[] CqWords = new string[] { "CQ", "73", "RR73" };
 
     private void TokenizeMessage(MessageInfo msg)
     {
       string text = msg.Message.ToString();
 
-      msg.Tokens.Add(new DisplayToken(text[0..36]));
-      msg.Tokens.AddRange(text[36..].Split(space).Select(s => new DisplayToken(s)).ToList());
+      msg.Tokens.Add(new DisplayToken(text[0..35]));
+      msg.Tokens.Add(new DisplayToken(text[35..38]));
+      msg.Tokens.AddRange(text[38..].Split(space).Select(s => new DisplayToken(s)).ToList());
+
+      msg.Tokens[1].bgBrush = BrushFromSnr(msg.Tokens[1].text, Color.Red);
+
+      for (int i=2; i<msg.Tokens.Count; i++) 
+        if (CqWords.Contains(msg.Tokens[i].text))
+          msg.Tokens[i].bgBrush = Brushes.Yellow;        
+    }
+
+    private static Brush BrushFromSnr(string snrString, Color color)
+    {
+      if (!int.TryParse(snrString, out int snr)) return Brushes.Transparent;
+
+      float snrFraction = 0.2f * Math.Min(1, (24 + snr) / 24f);
+      snrFraction = 0.99f - snrFraction;
+
+      var hsl = ColorSpaceHelper.RGBtoHSL(color);
+      hsl = new HSL(hsl.Hue, hsl.Saturation, snrFraction);
+      return new SolidBrush(ColorSpaceHelper.HSLtoColor(hsl));
     }
 
     private void WsjtxUdpSender_HighlightCallsignReceived(object? sender, HighlightCallsignEventArgs e)
@@ -91,9 +112,9 @@ namespace JTSkimmer
       {
         info = (MessageInfo)listBox.Items[i];
         if (info.Message.ToString()[5..13] != slot) break;
-        if (info.Parse.DECallsign != e.Callsign && info.Parse.DECallsign != $"<{e.Callsign}>") continue;
+        if (info.Parse.DECallsign != e.Callsign) continue;
 
-        var token = info.Tokens.FirstOrDefault(t => t.text == e.Callsign);
+        var token = info.Tokens.FirstOrDefault(t => t.text == e.Callsign || t.text == $"<{e.Callsign}>");
         if (token == null) continue;
         token.bgBrush = new SolidBrush(e.BackColor);
         token.fgBrush = new SolidBrush(e.ForeColor);
@@ -244,7 +265,6 @@ namespace JTSkimmer
     private static Brush RxBkBrush = new SolidBrush(Color.White);
     private static Brush ToMeBkBrush = new SolidBrush(Color.FromArgb(255, 175, 175));
     private static Brush HotBkBrush = new SolidBrush(Color.FromArgb(20, 0, 0, 255));
-    private readonly string[] CqWords = new string[] { "CQ", "73", "RR73" };
 
     private void listBox_DrawItem(object sender, DrawItemEventArgs e)
     {
@@ -266,10 +286,7 @@ namespace JTSkimmer
         SizeF size = e.Graphics.MeasureString(token.text, e.Font);
         RectangleF rect = new RectangleF(p, size);
 
-        bgBrush = token.bgBrush;
-        if (CqWords.Contains(token.text)) bgBrush = Brushes.Yellow;
-
-        e.Graphics.FillRectangle(bgBrush, rect);
+        e.Graphics.FillRectangle(token.bgBrush, rect);
         e.Graphics.DrawString(token.text, e.Font, token.fgBrush, p);
 
         SizeF sizeWithSpaces = e.Graphics.MeasureString(token.text.Replace(' ', '_'), e.Font);
