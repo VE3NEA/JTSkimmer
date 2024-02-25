@@ -6,21 +6,30 @@
     public readonly int nsubmode;
     public readonly int ntrperiod;
     public readonly string DisplayName;
+
+    public readonly string ModeString;
+    public readonly string SubModeString;
+
     public WsjtxMode(string modeName)
     {
       DisplayName = modeName;
 
       // mode
+      ModeString = modeName;
       if (modeName == "FT4") nmode = 5;
       else if (modeName == "FT8") nmode = 8;
       else if (modeName == "MSK144") nmode = 144;
-      else if (modeName.StartsWith("JT65")) nmode = 65;
-      else if (modeName.StartsWith("Q65")) nmode = 66;
+      else if (modeName.StartsWith("JT65")) { nmode = 65; ModeString = "JT65"; }
+      else if (modeName.StartsWith("Q65")) { nmode = 66; ModeString = "Q65"; }
       else nmode = 0;
 
       // submode
+      SubModeString = "";
       if (nmode == 65 || nmode == 66)
-        nsubmode = modeName[modeName.Length - 1] - '@';
+      {
+        SubModeString = modeName[-1..];
+        nsubmode = SubModeString[0] - '@';
+      }
       else
         nsubmode = 0;
 

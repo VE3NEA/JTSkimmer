@@ -11,7 +11,7 @@ namespace JTSkimmer
     private Dictionary<string, DateTime> Cache = new();
 
     public readonly DxClusterServer DxClusterServer;
-    public readonly WsjtxUdpSender WsjtxUdpSender = new();
+    public readonly WsjtxUdpSender WsjtxUdpSender;
     public readonly PskReporterUdpSender PskReporterUdpSender = new();
 
 
@@ -19,6 +19,7 @@ namespace JTSkimmer
     {
       this.ctx = ctx;
       DxClusterServer = new(ctx);
+      WsjtxUdpSender = new(ctx);
       processingThread.Priority = ThreadPriority.BelowNormal;
   }
 
@@ -101,7 +102,7 @@ namespace JTSkimmer
       var decode = new WritableDecode();
       decode.Id = WsjtxUdpSender.UniqueId;
       decode.New = true;
-      decode.Time = (uint)((DateTimeOffset)receivedAt).ToUnixTimeSeconds();
+      decode.Time = (uint)((receivedAt - DateTime.UtcNow.Date).TotalMilliseconds);
       decode.Snr = int.Parse(message.Substring(7, 3));
       decode.OffsetTimeSeconds = float.Parse(message.Substring(11, 4));
       decode.OffsetFrequencyHz = uint.Parse(message.Substring(16, 4));

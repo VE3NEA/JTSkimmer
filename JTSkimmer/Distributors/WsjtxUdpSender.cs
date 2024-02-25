@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using CSCore.Win32;
 using JTSkimmer.Distributors;
 using Serilog;
 using VE3NEA;
@@ -13,6 +14,7 @@ namespace JTSkimmer
   {
     private UdpClient? UdpClient;
     private readonly System.Timers.Timer Timer = new(15000);
+    private readonly Context ctx;
     private byte[] HeartbeatBytes;
     private IPEndPoint EndPoint;
     private CancellationTokenSource CancellationTokenSource;
@@ -25,8 +27,9 @@ namespace JTSkimmer
     public bool Active { get => UdpClient != null; }
     public string LastError { get; protected set; }
 
-    public WsjtxUdpSender()
+    public WsjtxUdpSender(Context ctx)
     {
+      this.ctx = ctx;
       HeartbeatBytes = MessageToBytes(new Heartbeat(UniqueId, "1.0", "0.0"));
       Timer.Elapsed += Timer_Elapsed;
     }
@@ -81,10 +84,18 @@ namespace JTSkimmer
     {
       if (!Active) return;
 
-      // status datagram with receiver frequency
+      // status datagram with receiver frequency and mode
       var status = new WritableStatus();
       status.Id = UniqueId;
       status.DialFrequencyInHz = messages.First().Message.Frequency;
+      status.DECall = ctx.Settings.User.Call;
+      status.DEGrid = ctx.Settings.User.Square;
+
+      WsjtxMode mode = new(messages.First().Message.Mode);
+      status.Mode = mode.ModeString;
+      status.SubMode = mode.SubModeString;
+      status.TRPeriod = (uint)mode.ntrperiod;
+
       UdpClient.Send(MessageToBytes(status), EndPoint);
 
       // decoded messages
