@@ -5,7 +5,7 @@ title: Download
 
 ### Current Version
 
-[JTSkimmer.zip v.0.97 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.97-beta/JTSkimmer.zip)
+[JTSkimmer.zip v.0.98 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.98-beta/JTSkimmer.zip)
 
 <br>
 ### Previous Versions
@@ -14,6 +14,17 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 
 <br>
 ### Release Notes
+
+#### v.0.98 Beta
+
+- SNR and CQ color-highlighting
+
+- callsign highlighting via UDP messages from the loggers, such as N1MM+
+  (![screenshot](assets/images/camera.png) [screenshot](assets/images/users_manual/jtskimmer_and_n1mm.png))
+
+- new Email the Author menu command
+
+- new View Archive button in the Messages panel
 
 #### v.0.97 Beta
 

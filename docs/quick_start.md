@@ -69,15 +69,19 @@ cover the first 360 kHz of the 10 m band. Click on OK.
   the program will do with the decoded messages:
   - Save to a file
   - Serve as DX spots from the built-in Telnet cluster
-  - Send UDP packets in the WSJT-X format to notify other programs, e.g. 
-  [JT Alert](https://hamapps.com/)
+  - Send UDP packets in the WSJT-X format to notify other programs, such as
+    - [GridTracker](https://gridtracker.org/), to show the spots on the map;
+    - [N1MM](https://n1mmwp.hamdocs.com/manual-windows/wsjt-x-decode-list-window/), 
+    for two-way data exchange and callsign highlighting
+    (![screenshot](assets/images/camera.png) [screenshot](assets/images/users_manual/jtskimmer_and_n1mm.png)).
   - Send to the [PSK Reporter](https://www.pskreporter.info/) web site  
 <br>
 - If desired, enable the _I/Q Output_ option. This will send out UDP packets with I/Q data 
   in the TIMF2 format understood by 
   [LinRad](https://www.sm5bsz.com/linuxdsp/linrad.htm), 
   [QMAP](https://wsjt.sourceforge.io/wsjtx.html) and 
-  [MAP65](https://wsjt.sourceforge.io/map65.html) programs.
+  [MAP65](https://wsjt.sourceforge.io/map65.html) programs
+  (![screenshot](assets/images/camera.png) [screenshot](assets/images/users_manual/jtskimmer_and_qmap.png)).
 
 - Minimize the JT Skimmer window. It will disappear from the Task Bar and hide in the System Tray:
 
