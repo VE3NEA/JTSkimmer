@@ -27,7 +27,7 @@
       SubModeString = "";
       if (nmode == 65 || nmode == 66)
       {
-        SubModeString = modeName[-1..];
+        SubModeString = modeName[(modeName.Length-1)..];
         nsubmode = SubModeString[0] - '@';
       }
       else
