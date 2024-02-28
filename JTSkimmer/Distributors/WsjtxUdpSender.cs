@@ -1,10 +1,7 @@
-﻿using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
-using CSCore.Win32;
 using JTSkimmer.Distributors;
 using Serilog;
-using VE3NEA;
 using WsjtxUtils.WsjtxMessages;
 using WsjtxUtils.WsjtxMessages.Messages;
 
@@ -96,11 +93,18 @@ namespace JTSkimmer
       status.SubMode = mode.SubModeString;
       status.TRPeriod = (uint)mode.ntrperiod;
 
-      UdpClient.Send(MessageToBytes(status), EndPoint);
+      SendMessage(status);
 
       // decoded messages
-      foreach (var message in messages)
-        UdpClient.Send(MessageToBytes(message.Decode), EndPoint);
+      foreach (var message in messages) SendMessage(message.Decode);
+    }
+
+    private void SendMessage(IWsjtxDirectionIn message)
+    {
+      byte[] bytes = MessageToBytes(message);
+      int sentByteCount = UdpClient.Send(bytes, EndPoint);
+      if (sentByteCount != bytes.Length)
+        Log.Error($"UdpClient.Send returned {sentByteCount} instead of {bytes.Length}");
     }
 
     private byte[] MessageToBytes(IWsjtxDirectionIn message)
@@ -133,8 +137,8 @@ namespace JTSkimmer
 
           var message = new ReadableHighlightCallsign();
           message.ReadMessage(reader);
-
-          HighlightCallsignReceived?.Invoke(this, new HighlightCallsignEventArgs(message));
+          if (message.Id == UniqueId)
+            HighlightCallsignReceived?.Invoke(this, new HighlightCallsignEventArgs(message));
         }
       }
       catch (OperationCanceledException)
