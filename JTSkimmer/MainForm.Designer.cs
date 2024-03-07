@@ -243,6 +243,9 @@
       SdrLedLabel.Name = "SdrLedLabel";
       SdrLedLabel.Size = new Size(21, 30);
       SdrLedLabel.Text = "n";
+      SdrLedLabel.Click += SdrDevicesMNU_Click;
+      SdrLedLabel.MouseEnter += StatusLabel_MouseEnter;
+      SdrLedLabel.MouseLeave += StatusLabel_MouseLeave;
       // 
       // SdrStatusLabel
       // 
@@ -278,9 +281,6 @@
       VacLedLabel.Name = "VacLedLabel";
       VacLedLabel.Size = new Size(21, 30);
       VacLedLabel.Text = "n";
-      VacLedLabel.Click += SdrDevicesMNU_Click;
-      VacLedLabel.MouseEnter += StatusLabel_MouseEnter;
-      VacLedLabel.MouseLeave += StatusLabel_MouseLeave;
       // 
       // VacStatusLabel
       // 
@@ -297,6 +297,9 @@
       OmniRigLedLabel.Name = "OmniRigLedLabel";
       OmniRigLedLabel.Size = new Size(21, 30);
       OmniRigLedLabel.Text = "n";
+      OmniRigLedLabel.Click += OmniRigStatusLabel_Click;
+      OmniRigLedLabel.MouseEnter += StatusLabel_MouseEnter;
+      OmniRigLedLabel.MouseLeave += StatusLabel_MouseLeave;
       // 
       // OmniRigStatusLabel
       // 
