@@ -61,7 +61,7 @@ Source: ..\bin\x64\Release\WeifenLuo.WinFormsUI.Docking.dll; DestDir: {app}; Fla
 Source: ..\bin\x64\Release\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\WsjtxUtils.WsjtxMessages.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\bin\x64\Release\sdrplay_api.dll; DestDir: {app}; Flags: ignoreversion
-Source: .\OmniRigSetup.exe; DestDir: {app}; Flags: deleteafterinstall overwritereadonly ignoreversion
+Source: .\OmniRigSetup.exe; DestDir: {app}; Flags: deleteafterinstall overwritereadonly ignoreversion; Components: " omnirig"; Tasks: 
 
 [Icons]
 Name: {commonprograms}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
@@ -69,7 +69,7 @@ Name: {commondesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desk
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}; Flags: nowait postinstall skipifsilent
-Filename: {app}\OmniRigSetup.exe; Parameters: /SILENT
+Filename: {app}\OmniRigSetup.exe; Parameters: /SILENT; Components: omnirig; Tasks: 
 
 [Code]
 function InitializeSetup: Boolean;
@@ -77,3 +77,5 @@ begin
   Dependency_AddDotNet70Desktop;
   Result := True;
 end;
+[Components]
+Name: omnirig; Description: OmniRig; Types: full
