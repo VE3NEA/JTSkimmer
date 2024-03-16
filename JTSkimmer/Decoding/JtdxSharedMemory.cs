@@ -57,12 +57,12 @@ namespace JTSkimmer
       }
     }
 
-    internal override void SetSamples(float[] samples)
+    internal override void SetSamples(float[] samples, float amplitude)
     {
       int sampleCount = samples.Length;
-      if (Samples.Length != sampleCount) Samples = new Int32[sampleCount];
-      float scale = 100000 / Math.Max(-samples.Min(), samples.Max());
-      for (int i = 0; i < sampleCount; i++) Samples[i] = (Int32)(samples[i] * scale);
+      if (Samples.Length != sampleCount) Samples = new int[sampleCount];
+      float scale = amplitude * int.MaxValue / Math.Max(-samples.Min(), samples.Max());
+      for (int i = 0; i < sampleCount; i++) Samples[i] = (int)(samples[i] * scale);
     }
 
 

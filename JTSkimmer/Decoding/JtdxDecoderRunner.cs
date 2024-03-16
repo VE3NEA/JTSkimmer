@@ -9,6 +9,7 @@ namespace JTSkimmer
 
     public JtdxDecoderRunner(string exePath, ReceiverSettings settings) : base(exePath, settings.DecoderMode)
     {
+      InputAmplitude = Dsp.FromDb2(settings.JtdxDecoder.InputAmplitude); // 0..1
       DecoderType = DecoderType.JTDX;
       SharedMemory = new JtdxSharedMemory();
       DecoderSettings = settings.JtdxDecoder;

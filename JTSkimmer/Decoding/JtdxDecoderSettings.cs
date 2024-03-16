@@ -4,6 +4,11 @@ namespace JTSkimmer
 {
   public class JtdxDecoderSettings
   {
+    [DisplayName("Input Amplitude")]
+    [Description("Input signal amplitude, dBFS")]
+    [DefaultValue(-10)]
+    public int InputAmplitude { get; set; } = -10;
+
     [DisplayName("Decoding Depth")]
     [DefaultValue(WsjtxDecodeDepth.Deep)]
     public WsjtxDecodeDepth DecodingDepth { get; set; } = WsjtxDecodeDepth.Deep;

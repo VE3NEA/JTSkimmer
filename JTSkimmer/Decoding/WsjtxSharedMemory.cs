@@ -98,12 +98,12 @@ namespace JTSkimmer
       Semaphore.Release();
     }
 
-    internal override void SetSamples(float[] samples)
+    internal override void SetSamples(float[] samples, float amplitude)
     {
       int sampleCount = samples.Length;
-      if (Samples.Length != sampleCount) Samples = new Int16[sampleCount];
-      float scale = 10000 / Math.Max(-samples.Min(), samples.Max());
-      for (int i = 0; i < sampleCount; i++) Samples[i] = (Int16)(samples[i] * scale);
+      if (Samples.Length != sampleCount) Samples = new short[sampleCount];
+      float scale = amplitude * short.MinValue / Math.Max(-samples.Min(), samples.Max());
+      for (int i = 0; i < sampleCount; i++) Samples[i] = (short)(samples[i] * scale);
     }
 
     protected override int GetSharedMemorySize()

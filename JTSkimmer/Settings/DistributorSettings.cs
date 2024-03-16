@@ -57,9 +57,9 @@ namespace JTSkimmer
 
   public class PskReporterSettings
   {
-    [DefaultValue(false)]
+    [DefaultValue(true)]
     [Description("Send decoded messages to PSK Reporter")]
-    public bool Enabled { get; set; }
+    public bool Enabled { get; set; } = true;
 
     [Description("Antenna description")]
     public string Antenna{ get; set; } = string.Empty;

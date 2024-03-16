@@ -16,6 +16,7 @@ namespace JTSkimmer
     protected Thread Thread;
     protected SharedMemory SharedMemory;
 
+    public float InputAmplitude = 1;
     public DecoderType DecoderType;
     public readonly string ExePath;
     public readonly Stopwatch StopWatch = new Stopwatch();
@@ -96,7 +97,7 @@ namespace JTSkimmer
       StopWatch.Restart();
 
       SettingsToSharedMemory(args.ReceivedAt);
-      SharedMemory.SetSamples(args.Data);
+      SharedMemory.SetSamples(args.Data, InputAmplitude);
       SharedMemory.Write();
     }
 

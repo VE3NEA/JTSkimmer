@@ -59,7 +59,7 @@ namespace JTSkimmer
       return bytes;
     }
 
-    internal abstract void SetSamples(float[] samples);
+    internal abstract void SetSamples(float[] samples, float amplitude);
     public abstract void ReadParams();
     public abstract void Write();
   }

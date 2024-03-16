@@ -1,4 +1,6 @@
-﻿namespace JTSkimmer
+﻿using VE3NEA;
+
+namespace JTSkimmer
 {
   internal class WsjtxDecoderRunner : DecoderRunner
   {
@@ -6,6 +8,7 @@
 
     internal WsjtxDecoderRunner(string exePath, ReceiverSettings settings) : base(exePath, settings.DecoderMode)
     {
+      InputAmplitude = Dsp.FromDb2(settings.WsjtxDecoder.InputAmplitude); // 0..1
       DecoderType = DecoderType.WSJTX;
       SharedMemory = new WsjtxSharedMemory();
       DecoderSettings = settings.WsjtxDecoder;
