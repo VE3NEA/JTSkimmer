@@ -5,7 +5,7 @@ title: Download
 
 ### Current Version
 
-[JTSkimmer.zip v.0.98 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.98-beta/JTSkimmer.zip)
+[JTSkimmer.zip v.0.99 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.0.99-beta/JTSkimmer.zip)
 
 <br>
 ### Previous Versions
@@ -14,6 +14,14 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 
 <br>
 ### Release Notes
+
+#### v.0.99 Beta
+
+- custom version of **jt9.exe** is no longer needed;
+
+- OmniRig installation is made optional;
+
+- input amplitude to decoders is user-configurable;
 
 #### v.0.98 Beta
 

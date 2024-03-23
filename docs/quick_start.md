@@ -11,18 +11,12 @@ title: Quick Start
 
 - The setup includes the latest version of
   [OmniRig](https://www.dxatlas.com/omnirig/). 
-  If you already have OmniRig installed and it works fine, click Cancel at this prompt:
+  If you already have OmniRig installed and it works fine, uncheck the OmniRig option:
   
-  ![OmniRig is running](/assets/images/omnirig_running.png)
-  
-- Replace the original _jt9.exe_  file in the WSJT-X installation folder with the 
-  custom-built _jt9.exe_ included in  the JT Skimmer setup. This custom build has extra code 
-  that allows decoding of the MSK144 mode. The code 
-  [will be included](https://sourceforge.net/p/wsjt/mailman/message/58721482/)
-  in the next official build of WSJT-X,
-  but until this happens, please use the custom build, or MSK144 will not be decoded.
-  
+  ![OmniRig is running](/assets/images/omnirig_option.png)
+
 ## Configuration
+
 - Connect your SDR receiver to the computer.
 
 - Start the program. Click on _Tools / SDR Devices_ in the menu. This dialog will open:
