@@ -34,7 +34,12 @@ namespace JTSkimmer
       switch (sdrInfo.SdrType)
       {
         case SdrType.RtlSdr: return new RtlSdrDevice(sdrInfo);
-        case SdrType.SdrPlay: return new SdrPlayDevice(sdrInfo);
+
+        case SdrType.SdrPlayRSP1A:
+        case SdrType.SdrPlayRSPDX:
+        case SdrType.SdrPlayOther:
+          return new SdrPlayDevice(sdrInfo);
+
         default: return new AirspyDevice(sdrInfo);
       }
     }

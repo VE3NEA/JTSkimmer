@@ -11,7 +11,7 @@ namespace JTSkimmer
 {
   internal class SdrPlayDevice : BaseSdrDevice
   {
-    private const float SDRPLAY_API_VERSION = 3.11f;
+    private const float SDRPLAY_API_VERSION = 3.14f;
     public const int SDRPLAY_RSP1B_ID = 6;
 
     private static readonly Dictionary<int, string> SdrplayModels = new Dictionary<int, string>()
@@ -44,11 +44,13 @@ namespace JTSkimmer
       if (ApiOK) sdrplay_api_Close();
     }
 
+    private SdrPlaySettings Settings { get => (SdrPlaySettings) Info.Settings; }
+
     protected override void Start()
     {
       if (!ApiOK) throw new Exception("API could not be opened");
 
-      if (Info.SdrPlaySettings.Agc)
+      if (Settings.Agc)
         Gains = Array.Empty<float>();
       else
         Gains = Enumerable.Range(0, 40).Select(index=> 59f - index).ToArray();
@@ -82,14 +84,16 @@ namespace JTSkimmer
       DevParams = Marshal.PtrToStructure<sdrplay_api_DevParamsT>(DeviceParams.devParams);
       RxChannel = Marshal.PtrToStructure<sdrplay_api_RxChannelParamsT>(DeviceParams.rxChannelA);
 
-      DevParams.fsFreq.fsHz = Info.SdrPlaySettings.SamplingRate * 3; // sdrplay divides SR by 3 - not documented
-      RxChannel.tunerParams.rfFreq.rfHz = Info.SdrPlaySettings.CenterFrequency * (1 + Info.Settings.Ppm * 1e-6);
+      DevParams.fsFreq.fsHz = Settings.SamplingRate * 3; // sdrplay divides SR by 3 - not documented
+      RxChannel.tunerParams.rfFreq.rfHz = Settings.CenterFrequency * (1 + Info.Settings.Ppm * 1e-6);
       RxChannel.tunerParams.bwType = SDRplayAPI_Tuner.sdrplay_api_Bw_MHzT.sdrplay_api_BW_1_536;
       RxChannel.tunerParams.ifType = SDRplayAPI_Tuner.sdrplay_api_If_kHzT.sdrplay_api_IF_1_620;
 
-      if (!Info.SdrPlaySettings.Agc) RxChannel.tunerParams.gain.gRdB = (int)Gains[GainIndex]; //20..59
-      RxChannel.ctrlParams.agc.enable = Info.SdrPlaySettings.Agc ? 
+      if (!Settings.Agc) RxChannel.tunerParams.gain.gRdB = (int)Gains[GainIndex]; //20..59
+      RxChannel.ctrlParams.agc.enable = Settings.Agc ? 
         sdrplay_api_AgcControlT.sdrplay_api_AGC_50HZ : sdrplay_api_AgcControlT.sdrplay_api_AGC_DISABLE;
+
+      SetModelSpecificParameters();
 
       Marshal.StructureToPtr(DevParams, DeviceParams.devParams, false);
       Marshal.StructureToPtr(RxChannel, DeviceParams.rxChannelA, false);
@@ -104,6 +108,27 @@ namespace JTSkimmer
       CheckSuccess(rc);
 
       running = true;
+    }
+
+    private void SetModelSpecificParameters()
+    {
+      switch (Info.SdrType)
+      {
+        case SdrType.SdrPlayRSP1A:
+          DevParams.rsp1aParams.rfNotchEnable = (byte)(Info.SdrPlayRsp1aSettings.NotchEnabled ? 1 : 0);
+          DevParams.rsp1aParams.rfDabNotchEnable = (byte)(Info.SdrPlayRsp1aSettings.DabNotchEnabled ? 1 : 0);
+          RxChannel.rsp1aTunerParams.biasTEnable = (byte)(Info.SdrPlayRsp1aSettings.BiasTEnabled ? 1 : 0);          
+          break;
+
+        case SdrType.SdrPlayRSPDX:
+          DevParams.rspDxParams.antennaSel = Info.SdrPlayRspDxSettings.AntennaSelection;
+          DevParams.rspDxParams.rfNotchEnable = (byte)(Info.SdrPlayRspDxSettings.NotchEnabled ? 1 : 0);
+          DevParams.rspDxParams.rfDabNotchEnable = (byte)(Info.SdrPlayRspDxSettings.DabNotchEnabled ? 1 : 0);
+          DevParams.rspDxParams.hdrEnable = (byte)(Info.SdrPlayRspDxSettings.HdrEnabled ? 1 : 0);
+          RxChannel.rspDxTunerParams.hdrBw = Info.SdrPlayRspDxSettings.HdrBandwidth;
+          DevParams.rspDxParams.biasTEnable= (byte)(Info.SdrPlayRspDxSettings.BiasTEnabled ? 1 : 0);
+          break;
+      }
     }
 
     protected override void Stop()
@@ -161,7 +186,7 @@ namespace JTSkimmer
 
     protected override void SetFrequency(uint frequency)
     {
-      RxChannel.tunerParams.rfFreq.rfHz = Info.SdrPlaySettings.CenterFrequency;
+      RxChannel.tunerParams.rfFreq.rfHz = Settings.CenterFrequency;
       Marshal.StructureToPtr(RxChannel, DeviceParams.rxChannelA, false);
 
       var rc = sdrplay_api_Update(Device.dev, Device.tuner, 
@@ -175,7 +200,7 @@ namespace JTSkimmer
       if (Gains.Length == 0) return;
 
       gainIndex = (uint)Math.Min(Gains.Length - 1, Math.Max(0, gainIndex));
-      Info.SdrPlaySettings.GainIndex = gainIndex;
+      Settings.GainIndex = gainIndex;
 
       if (Running)
       {
@@ -210,7 +235,11 @@ namespace JTSkimmer
 
             for (int i = 0; i < deviceCount; i++)
               if (devices[i].hwVer != SDRPLAY_RSPduo_ID) // {!} no support for duo yet
-                result.Add(new(SdrType.SdrPlay, SdrplayModels[devices[i].hwVer], GetSerialNumber(devices[i])));
+                result.Add(new(
+                  GetSdrPlayType(devices[i].hwVer), 
+                  SdrplayModels[devices[i].hwVer], 
+                  GetSerialNumber(devices[i])                  
+                  ));
           }
           finally
           {
@@ -228,6 +257,16 @@ namespace JTSkimmer
       }
 
       return result;
+    }
+
+    private static SdrType GetSdrPlayType(byte hwVer)
+    {
+      switch (hwVer)
+      {
+        case SDRPLAY_RSP1A_ID: return SdrType.SdrPlayRSP1A;
+        case SDRPLAY_RSPdx_ID: return SdrType.SdrPlayRSPDX;
+        default: return SdrType.SdrPlayOther;
+      }
     }
 
     private static bool CheckSuccess(sdrplay_api_ErrT rc, bool silent = false)
@@ -268,7 +307,7 @@ namespace JTSkimmer
       }
 
       if (version != SDRPLAY_API_VERSION)
-        Log.Warning($"SDRplay API version mismatch: service={SDRPLAY_API_VERSION}, dll={version}");
+        Log.Warning($"SDRplay API version mismatch: service={version}, dll={SDRPLAY_API_VERSION}");
 
       return true;
     }

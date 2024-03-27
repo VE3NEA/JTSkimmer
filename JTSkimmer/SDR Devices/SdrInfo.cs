@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using VE3NEA.HamCockpit.PluginHelpers;
+using static UN7ZO.HamCockpitPlugins.SDRPlaySource.SDRplayAPI_RSPdx;
 
 namespace JTSkimmer
 {
@@ -9,7 +10,10 @@ namespace JTSkimmer
     RtlSdr,
     AirspyMini,
     AirspyR2,
-    SdrPlay,
+
+    SdrPlayRSP1A,
+    SdrPlayRSPDX,
+    SdrPlayOther,
   }
 
   public class SdrSettings
@@ -99,6 +103,59 @@ namespace JTSkimmer
     public bool Agc { get; set; }
   }
 
+  public class SdrPlayRsp1aSettings : SdrPlaySettings
+  {
+    [DisplayName("Notch")]
+    [Description("Enable Notch")]
+    [DefaultValue(false)]
+    public bool NotchEnabled { get; set; }
+
+    [DisplayName("DAB Notch")]
+    [Description("Enable DAB Notch")]
+    [DefaultValue(false)]
+    public bool DabNotchEnabled { get; set; }
+
+    [DisplayName("Bias-T")]
+    [Description("Enable Bias-T voltage")]
+    [DefaultValue(false)]
+    public bool BiasTEnabled { get; set; }
+  }
+
+  public class SdrPlayRspDxSettings : SdrPlaySettings
+  {
+    [DisplayName("Antenna")]
+    [Description("Antenna Selection")]
+    [DefaultValue(sdrplay_api_RspDx_AntennaSelectT.sdrplay_api_RspDx_ANTENNA_A)]
+    [TypeConverter(typeof(EnumDescriptionConverter))]
+    public sdrplay_api_RspDx_AntennaSelectT AntennaSelection { get; set; } = sdrplay_api_RspDx_AntennaSelectT.sdrplay_api_RspDx_ANTENNA_A;
+
+    [DisplayName("Notch")]
+    [Description("Enable Notch")]
+    [DefaultValue(false)]
+    public bool NotchEnabled { get; set; }
+
+    [DisplayName("DAB Notch")]
+    [Description("Enable DAB Notch")]
+    [DefaultValue(false)]
+    public bool DabNotchEnabled { get; set; }
+
+    [DisplayName("HDR")]
+    [Description("Enable HDR Mode")]
+    [DefaultValue(false)]
+    public bool HdrEnabled { get; set; }
+
+    [DisplayName("HDR Bandwidth")]
+    [DefaultValue(sdrplay_api_RspDx_HdrModeBwT.sdrplay_api_RspDx_HDRMODE_BW_1_700)]
+    [TypeConverter(typeof(EnumDescriptionConverter))]
+    public sdrplay_api_RspDx_HdrModeBwT HdrBandwidth { get; set; } = sdrplay_api_RspDx_HdrModeBwT.sdrplay_api_RspDx_HDRMODE_BW_1_700;
+
+    [DisplayName("Bias-T")]
+    [Description("Enable Bias-T voltage")]
+    [DefaultValue(false)]
+    public bool BiasTEnabled { get; set; }
+  }
+
+
   public class SdrInfo
   {
     [TypeConverter(typeof(EnumDescriptionConverter))] 
@@ -110,7 +167,13 @@ namespace JTSkimmer
 
     public AirspySettings? AirspySettings { get; set; }
     public RtlSdrSettings? RtlSdrSettings { get; set; }
-    public SdrPlaySettings? SdrPlaySettings { get; set; }
+
+
+    public SdrPlayRsp1aSettings? SdrPlayRsp1aSettings { get; set; }
+    public SdrPlayRspDxSettings? SdrPlayRspDxSettings { get; set; }
+    public SdrPlaySettings? SdrPlayOtherSettings { get; set; }
+
+    
     internal SdrSettings Settings { get => GetSettings(); }
 
     public SdrInfo(SdrType sdrType, string name, string serial)
@@ -120,7 +183,11 @@ namespace JTSkimmer
       SerialNumber = serial;
 
       if (sdrType == SdrType.RtlSdr) RtlSdrSettings = new();
-      else if (sdrType == SdrType.SdrPlay) SdrPlaySettings = new();
+
+      
+      else if (sdrType == SdrType.SdrPlayRSP1A) SdrPlayRsp1aSettings = new();
+      else if (sdrType == SdrType.SdrPlayRSPDX) SdrPlayRspDxSettings = new();
+      else if (sdrType == SdrType.SdrPlayOther) SdrPlayOtherSettings = new();
       else AirspySettings = new();
       SdrSettings sett = GetSettings();
 
@@ -136,7 +203,11 @@ namespace JTSkimmer
       switch (SdrType)
       {
         case SdrType.RtlSdr: return RtlSdrSettings;
-        case SdrType.SdrPlay: return SdrPlaySettings;
+
+        case SdrType.SdrPlayRSP1A: return SdrPlayRsp1aSettings;
+        case SdrType.SdrPlayRSPDX: return SdrPlayRspDxSettings;
+        case SdrType.SdrPlayOther: return SdrPlayOtherSettings;
+
         default: return AirspySettings;
       }
     }
