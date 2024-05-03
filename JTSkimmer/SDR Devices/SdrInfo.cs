@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using VE3NEA.HamCockpit.PluginHelpers;
 using static UN7ZO.HamCockpitPlugins.SDRPlaySource.SDRplayAPI_RSPdx;
 
@@ -191,7 +192,10 @@ namespace JTSkimmer
       else AirspySettings = new();
       SdrSettings sett = GetSettings();
 
-      sett.SamplingRate = SdrConst.DeviceRate[(int)sdrType];
+      Debug.Assert(SdrConst.DeviceRates.Length == Enum.GetNames(typeof(SdrType)).Length);
+      Debug.Assert(SdrConst.Bandwidths.Length == Enum.GetNames(typeof(SdrType)).Length);
+
+      sett.SamplingRate = SdrConst.DeviceRates[(int)sdrType];
       sett.Bandwidth = SdrConst.Bandwidths[(int)sdrType].Values.Min();
       sett.CenterFrequency = 28100000;
     }
