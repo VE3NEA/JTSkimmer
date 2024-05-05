@@ -32,6 +32,15 @@ namespace JTSkimmer
     [DefaultValue(true)]
     public bool EnableAP { get; set; } = true;
 
+
+    [Description("Q65 enable averagins")]
+    [DefaultValue(true)]
+    public bool Q65Average { get; set; } = true;
+
+    [Description("Q65 auto clear average after decode")]
+    [DefaultValue(true)]
+    public bool Q65ClearAfter{ get; set; } = true;
+
     [DefaultValue(WsjtxQsoProgress.CALLING)]
     public WsjtxQsoProgress QsoProgress { get; set; } = WsjtxQsoProgress.CALLING;
 

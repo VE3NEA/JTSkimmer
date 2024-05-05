@@ -24,6 +24,8 @@ namespace JTSkimmer
 
     public override unsafe void Write()
     {
+      ParamsBlock.kin = Samples.Length;
+
       Semaphore.WaitOne();
       try
       {

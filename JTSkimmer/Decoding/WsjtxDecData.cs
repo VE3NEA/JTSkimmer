@@ -104,14 +104,30 @@ namespace JTSkimmer
 
     public WsjtxParamsBlock() { }
 
+
+    private const int BLOCK_SIZE = 3456;
     // put decoding parameters in the WSJTX structure
     internal void Populate(WsjtxMode mode, WsjtxDecoderSettings decoderSettings, DateTime utc)
     {
-      nmode = mode.nmode;
+      ntxmode = nmode = mode.nmode;
       nsubmode = mode.nsubmode;
       ntrperiod = mode.ntrperiod;
 
+      nzhsym = mode.nzhsym;
+      kin = mode.kin;
+      npts8 = nzhsym * BLOCK_SIZE / 8;
+
+      // Include_averaging    16;
+      // Include_correlation  32;
+      // Enable_AP_DXcall     64;
+      // Auto_Clear_Avg      128;
       ndepth = (int)decoderSettings.DecodingDepth;
+      if (nmode == 66)
+      {
+        if (decoderSettings.Q65Average) ndepth += 16;
+        if (decoderSettings.Q65ClearAfter) ndepth += 128;
+      }
+
       lft8apon = decoderSettings.EnableAP;
       nQSOProgress = (int)decoderSettings.QsoProgress;
       nfqso = decoderSettings.RxOffsetHz;
