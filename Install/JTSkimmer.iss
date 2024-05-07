@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "JT Skimmer"
-#define MyAppVersion "0.99 beta"
+#define MyAppVersion "1.00 beta"
 #define MyAppPublisher "Alex VE3NEA"
 #define MyAppURL "https://ve3nea.github.io/JTSkimmer"
 #define MyAppExeName "JTSkimmer.exe"
