@@ -6,7 +6,7 @@ namespace JTSkimmer
 {
   public unsafe class Slicer : ThreadedProcessor<Complex32>
   {
-    const int STOPBAND_REJECTION_DB = 60;
+    const int STOPBAND_REJECTION_DB = 80;
 
     private NativeLiquidDsp.nco_crcf* nco;
     private NativeLiquidDsp.msresamp_crcf* resamp;
