@@ -100,10 +100,11 @@ namespace JTSkimmer
     {
     }
 
-    double Phi = 0;
-    double dPhi = 0;
+    double Phi, dPhi;
+  
     // -1.5..1.5 MHz in 20 seconds at 3 MHz rate
 //    double ddPhi = 2 * Math.PI / 3000000 / 30;
+
     // -180..180 kHz in 60 seconds at 360 kHz rate
     double ddPhi = 2 * Math.PI / 360000 / 60;
     private void AddSineWave(Complex32[] buffer)
