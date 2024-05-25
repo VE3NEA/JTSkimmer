@@ -141,6 +141,11 @@ namespace JTSkimmer
       if (ChangedFields.Exists(s => s.StartsWith("JTSkimmer.OmniRigSettings.")))
         ctx.MainForm.ApplyOmnirigSettings();
 
+      if (ChangedFields.Exists(s => s.StartsWith("JTSkimmer.MessagePanelSettings.")) || 
+        ChangedFields.Exists(s => s.StartsWith("JTSkimmer.HighlightSettings.")))
+          ctx.MessagesPanel?.ApplySettings();
+
+
       ChangedFields.Clear();
     }
   }

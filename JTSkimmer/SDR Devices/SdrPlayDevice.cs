@@ -159,6 +159,7 @@ namespace JTSkimmer
     {
       try
       {
+        // todo: check for not null
         var device = (SdrPlayDevice)((GCHandle)cbContext).Target;
 
         if (device.RawDataI.Length < numSamples)

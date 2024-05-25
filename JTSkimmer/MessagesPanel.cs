@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using System.Security.Policy;
 using System.Windows.Forms;
 using Devcorp.Controls.Design;
 using FontAwesome;
@@ -17,6 +18,11 @@ namespace JTSkimmer
     private bool AutoScrollMode = true;
     private bool Frozen;
     private MessageInfo? HotItem;
+    private Brush BgBrush;
+    private Brush MyCallBrush;
+    private Brush CqBrush;
+    private Brush GridBrush;
+
 
     internal MessagesPanel()
     {
@@ -37,6 +43,8 @@ namespace JTSkimmer
       ScrollDownBtn.Text = FontAwesomeIcons.ArrowDown;
       ViewArchiveBtn.Font = ctx.AwesomeFont14;
       ViewArchiveBtn.Text = FontAwesomeIcons.Folder;
+
+      ApplySettings();
     }
 
     private void MessagesPanel_FormClosing(object sender, FormClosingEventArgs e)
@@ -45,6 +53,29 @@ namespace JTSkimmer
       ctx.MessagesPanel = null;
       ctx.MainForm.ViewMessagesMNU.Checked = false;
     }
+
+    internal void ApplySettings()
+    {
+      var sett = ctx.Settings.MessagesPanel;
+
+      //Font messageFont = new Font("Lucida Console", sett.FontSize);
+      Font messageFont = new Font("Courier New", sett.FontSize);
+      listBox.Font = messageFont;
+      listBox.ItemHeight = messageFont.Height;
+
+      listBox.BackColor = sett.BackColor;
+      listBox.ForeColor = sett.TextColor;
+
+      BgBrush = new SolidBrush(sett.BackColor);
+      MyCallBrush = new SolidBrush(sett.MyCallColor);
+      CqBrush = new SolidBrush(sett.CqColor);
+      GridBrush = new SolidBrush(sett.GridColor);
+
+      foreach (MessageInfo item in listBox.Items) HighlightWords(item);
+
+      listBox.Invalidate();
+    }
+
 
 
 
@@ -87,9 +118,16 @@ namespace JTSkimmer
 
       msg.Tokens[1].bgBrush = BrushFromSnr(msg.Tokens[1].text, Color.Red);
 
+      HighlightWords(msg);
+    }
+
+    private void HighlightWords(MessageInfo msg)
+    {
       for (int i = 2; i < msg.Tokens.Count; i++)
         if (CqWords.Contains(msg.Tokens[i].text))
-          msg.Tokens[i].bgBrush = Brushes.Yellow;
+          msg.Tokens[i].bgBrush = CqBrush;
+        else if (msg.Tokens[i].text == msg.Parse.GridSquare)
+          msg.Tokens[i].bgBrush = GridBrush;
     }
 
     private static Brush BrushFromSnr(string snrString, Color color)
@@ -270,8 +308,6 @@ namespace JTSkimmer
     //--------------------------------------------------------------------------------------------------------------
     //                                                paint
     //--------------------------------------------------------------------------------------------------------------
-    private static Brush RxBkBrush = new SolidBrush(Color.White);
-    private static Brush ToMeBkBrush = new SolidBrush(Color.FromArgb(255, 175, 175));
     private static Brush HotBkBrush = new SolidBrush(Color.FromArgb(20, 0, 0, 255));
 
     private void listBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -284,8 +320,7 @@ namespace JTSkimmer
       var spaceWidth = e.Graphics.MeasureString("__", e.Font).Width - e.Graphics.MeasureString("_", e.Font).Width;
       PointF p = new PointF(e.Bounds.Location.X, e.Bounds.Location.Y);
 
-      Brush bgBrush = RxBkBrush;
-      if (toMe) bgBrush = ToMeBkBrush;
+      Brush bgBrush = toMe ? MyCallBrush : BgBrush;
       e.Graphics.FillRectangle(bgBrush, e.Bounds);
       if (info == HotItem) e.Graphics.FillRectangle(HotBkBrush, e.Bounds);
 

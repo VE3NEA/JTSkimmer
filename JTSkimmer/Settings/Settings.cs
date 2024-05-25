@@ -28,9 +28,14 @@ namespace JTSkimmer
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public DecodingSettings Decoding { get; set; } = new();
 
-    [DisplayName("OmniRig settings")]
+    [DisplayName("OmniRig")]
+    [Description("OmniRig settings")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public OmniRigSettings OmniRig { get; set; } = new();
+
+    [DisplayName("Messages Panel")]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    public MessagePanelSettings MessagesPanel { get; set; } = new();
 
     [DisplayName("Message Distribution")]
     [TypeConverter(typeof(ExpandableObjectConverter))]
