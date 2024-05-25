@@ -15,7 +15,7 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 <br>
 ### Release Notes
 
-#### v.1.00 Beta
+#### v.1.01 Beta
 
 - custom font size and color in the message list;
 
