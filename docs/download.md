@@ -5,7 +5,7 @@ title: Download
 
 ### Current Version
 
-[JTSkimmer.zip v.1.01 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.1.01-beta/JTSkimmer.zip)
+[JTSkimmer.zip v.1.02 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.1.02-beta/JTSkimmer.zip)
 
 <br>
 ### Previous Versions
@@ -14,6 +14,12 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 
 <br>
 ### Release Notes
+
+#### v.1.02 Beta
+
+- added support of SDRplay RSPduo and RSPdx R2, added custom settings for RSP2;
+
+- fixed font customization in the messages panel.
 
 #### v.1.01 Beta
 
