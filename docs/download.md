@@ -8,6 +8,16 @@ title: Download
 [JTSkimmer.zip v.1.02 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.1.02-beta/JTSkimmer.zip)
 
 <br>
+
+>**NOTE:**
+>If your antivirus complains about the JT Skimmer installer, this is most likely a false positive.
+>When this happens, please:
+>- scan the file using an 
+[online virus scanner](https://www.virustotal.com/gui/home/url);
+>- if the file is clean, [add an exclusion](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#ID0EBF=Windows_11)
+>to Windows Security.
+
+<br>
 ### Previous Versions
 
 See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
