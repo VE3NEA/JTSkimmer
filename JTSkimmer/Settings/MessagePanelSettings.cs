@@ -11,8 +11,8 @@ namespace JTSkimmer
     [DisplayName("Text Color")]
     public Color TextColor { get; set; } = SystemColors.WindowText;
 
-    [DisplayName("My Call Color")]
-    public Color MyCallColor { get; set; } = Color.FromArgb(255, 175, 175);
+    [DisplayName("Message to Me Color")]
+    public Color MessageToMeColor { get; set; } = Color.FromArgb(255, 175, 175);
 
     [DisplayName("Font Size")]
     [DefaultValue(9f)]

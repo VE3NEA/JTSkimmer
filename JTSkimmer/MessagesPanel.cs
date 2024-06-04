@@ -19,7 +19,8 @@ namespace JTSkimmer
     private bool Frozen;
     private MessageInfo? HotItem;
     private Brush BgBrush;
-    private Brush MyCallBrush;
+    private Brush FgBrush;
+    private Brush MessageToMeBrush;
     private Brush CqBrush;
     private Brush GridBrush;
 
@@ -67,7 +68,8 @@ namespace JTSkimmer
       listBox.ForeColor = sett.TextColor;
 
       BgBrush = new SolidBrush(sett.BackColor);
-      MyCallBrush = new SolidBrush(sett.MyCallColor);
+      FgBrush = new SolidBrush(sett.TextColor);
+      MessageToMeBrush = new SolidBrush(sett.MessageToMeColor);
       CqBrush = new SolidBrush(sett.CqColor);
       GridBrush = new SolidBrush(sett.GridColor);
 
@@ -314,23 +316,27 @@ namespace JTSkimmer
     {
       if (e.Index < 0) return;
 
+      // params
       var info = (MessageInfo)listBox.Items[e.Index];
-      bool toMe = info.Parse.DXCallsign == ctx.Settings.User.Call;
-
       var spaceWidth = e.Graphics.MeasureString("__", e.Font).Width - e.Graphics.MeasureString("_", e.Font).Width;
       PointF p = new PointF(e.Bounds.Location.X, e.Bounds.Location.Y);
 
-      Brush bgBrush = toMe ? MyCallBrush : BgBrush;
+      // bg
+      bool toMe = info.Parse.DXCallsign == ctx.Settings.User.Call;
+      Brush bgBrush = toMe ? MessageToMeBrush : BgBrush;
       e.Graphics.FillRectangle(bgBrush, e.Bounds);
+
+      // current line
       if (info == HotItem) e.Graphics.FillRectangle(HotBkBrush, e.Bounds);
 
+      // tokens
       foreach (var token in info.Tokens)
       {
         SizeF size = e.Graphics.MeasureString(token.text, e.Font);
         RectangleF rect = new RectangleF(p, size);
 
         e.Graphics.FillRectangle(token.bgBrush, rect);
-        e.Graphics.DrawString(token.text, e.Font, token.fgBrush, p);
+        e.Graphics.DrawString(token.text, e.Font, token.fgBrush ?? FgBrush, p);
 
         SizeF sizeWithSpaces = e.Graphics.MeasureString(token.text.Replace(' ', '_'), e.Font);
         p.X += sizeWithSpaces.Width + spaceWidth;
