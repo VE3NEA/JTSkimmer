@@ -36,7 +36,9 @@ namespace JTSkimmer
         case SdrType.RtlSdr: return new RtlSdrDevice(sdrInfo);
 
         case SdrType.SdrPlayRSP1A:
-        case SdrType.SdrPlayRSPDX:
+        case SdrType.SdrPlayRSP2:
+        case SdrType.SdrPlayRSPdx:
+        case SdrType.SdrPlayRSPduo:
         case SdrType.SdrPlayOther:
           return new SdrPlayDevice(sdrInfo);
 

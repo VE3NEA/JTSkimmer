@@ -1,10 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using MathNet.Numerics;
 using Serilog;
 using UN7ZO.HamCockpitPlugins.SDRPlaySource;
+using VE3NEA.HamCockpit.PluginHelpers;
 using static UN7ZO.HamCockpitPlugins.SDRPlaySource.NativeMethods;
 using static UN7ZO.HamCockpitPlugins.SDRPlaySource.SDRplayAPI_Callback;
+using static UN7ZO.HamCockpitPlugins.SDRPlaySource.SDRplayAPI_RSP2;
+using static UN7ZO.HamCockpitPlugins.SDRPlaySource.SDRplayAPI_RSPduo;
 
 
 namespace JTSkimmer
@@ -13,6 +17,8 @@ namespace JTSkimmer
   {
     private const float SDRPLAY_API_VERSION = 3.14f;
     public const int SDRPLAY_RSP1B_ID = 6;
+    public const int SDRPLAY_RSPdxR2_ID = 7;
+    
 
     private static readonly Dictionary<int, string> SdrplayModels = new Dictionary<int, string>()
     {
@@ -22,6 +28,7 @@ namespace JTSkimmer
       {SDRPLAY_RSPduo_ID, "SDRplay RSP Duo" },
       {SDRPLAY_RSPdx_ID, "SDRplay RSP DX" },
       {SDRPLAY_RSP1B_ID, "SDRplay RSP1b" },
+      {SDRPLAY_RSPdxR2_ID, "SDRplay RSPdxR2" },
     };
 
     private static bool ApiOK;
@@ -67,6 +74,13 @@ namespace JTSkimmer
 
         // throw exception if sn not found
         Device = devices.First(d => GetSerialNumber(d) == Info.SerialNumber);
+
+        // RSPduo is always opened in single tuner mode, with tuner A selected
+        if (Device.hwVer == SDRPLAY_RSPduo_ID)
+        {
+          Device.tuner = SDRplayAPI_Tuner.sdrplay_api_TunerSelectT.sdrplay_api_Tuner_A;
+          Device.rspDuoMode = sdrplay_api_RspDuoModeT.sdrplay_api_RspDuoMode_Single_Tuner;
+        }
 
         // open device
         rc = sdrplay_api_SelectDevice(ref Device);
@@ -120,13 +134,29 @@ namespace JTSkimmer
           RxChannel.rsp1aTunerParams.biasTEnable = (byte)(Info.SdrPlayRsp1aSettings.BiasTEnabled ? 1 : 0);          
           break;
 
-        case SdrType.SdrPlayRSPDX:
+        case SdrType.SdrPlayRSP2:
+          DevParams.rsp2Params.extRefOutputEn = (byte)(Info.SdrPlayRsp2Settings.ExtRefOutput ? 1 : 0);
+          RxChannel.rsp2TunerParams.biasTEnable = (byte)(Info.SdrPlayRsp2Settings.BiasTEnabled? 1 : 0);
+          RxChannel.rsp2TunerParams.amPortSel = Info.SdrPlayRsp2Settings.AntennaPortSelection;
+          RxChannel.rsp2TunerParams.antennaSel = Info.SdrPlayRsp2Settings.AntennaSelection;
+          break;
+
+        case SdrType.SdrPlayRSPdx:
           DevParams.rspDxParams.antennaSel = Info.SdrPlayRspDxSettings.AntennaSelection;
           DevParams.rspDxParams.rfNotchEnable = (byte)(Info.SdrPlayRspDxSettings.NotchEnabled ? 1 : 0);
           DevParams.rspDxParams.rfDabNotchEnable = (byte)(Info.SdrPlayRspDxSettings.DabNotchEnabled ? 1 : 0);
-          DevParams.rspDxParams.hdrEnable = (byte)(Info.SdrPlayRspDxSettings.HdrEnabled ? 1 : 0);
-          RxChannel.rspDxTunerParams.hdrBw = Info.SdrPlayRspDxSettings.HdrBandwidth;
+          //DevParams.rspDxParams.hdrEnable = (byte)(Info.SdrPlayRspDxSettings.HdrEnabled ? 1 : 0);
+          //RxChannel.rspDxTunerParams.hdrBw = Info.SdrPlayRspDxSettings.HdrBandwidth;
           DevParams.rspDxParams.biasTEnable= (byte)(Info.SdrPlayRspDxSettings.BiasTEnabled ? 1 : 0);
+          break;
+
+        case SdrType.SdrPlayRSPduo:
+          DevParams.rspDuoParams.extRefOutputEn = (byte)(Info.SdrPlayRspDuoSettings.ExtRefOutput ? 1 : 0);
+          RxChannel.rspDuoTunerParams.biasTEnable = (byte)(Info.SdrPlayRspDuoSettings.BiasTEnabled ? 1 : 0);
+          RxChannel.rspDuoTunerParams.tuner1AmPortSel = Info.SdrPlayRspDuoSettings.AmPort;
+          RxChannel.rspDuoTunerParams.tuner1AmNotchEnable = (byte)(Info.SdrPlayRspDuoSettings.AmNotchEnabled ? 1 : 0);
+          RxChannel.rspDuoTunerParams.rfNotchEnable = (byte)(Info.SdrPlayRspDuoSettings.NotchEnabled ? 1 : 0);
+          RxChannel.rspDuoTunerParams.rfDabNotchEnable = (byte)(Info.SdrPlayRspDuoSettings.DabNotchEnabled ? 1 : 0);
           break;
       }
     }
@@ -235,12 +265,11 @@ namespace JTSkimmer
             if (!CheckSuccess(rc, true)) return result;
 
             for (int i = 0; i < deviceCount; i++)
-              if (devices[i].hwVer != SDRPLAY_RSPduo_ID) // {!} no support for duo yet
-                result.Add(new(
-                  GetSdrPlayType(devices[i].hwVer), 
-                  SdrplayModels[devices[i].hwVer], 
-                  GetSerialNumber(devices[i])                  
-                  ));
+              result.Add(new(
+                GetSdrPlayType(devices[i].hwVer),
+                SdrplayModels[devices[i].hwVer],
+                GetSerialNumber(devices[i])
+                ));
           }
           finally
           {
@@ -264,8 +293,20 @@ namespace JTSkimmer
     {
       switch (hwVer)
       {
-        case SDRPLAY_RSP1A_ID: return SdrType.SdrPlayRSP1A;
-        case SDRPLAY_RSPdx_ID: return SdrType.SdrPlayRSPDX;
+        case SDRPLAY_RSP1A_ID:
+        case SDRPLAY_RSP1B_ID:
+          return SdrType.SdrPlayRSP1A;
+
+        case SDRPLAY_RSP2_ID:
+          return SdrType.SdrPlayRSP2;
+
+        case SDRPLAY_RSPdx_ID:
+        case SDRPLAY_RSPdxR2_ID:
+          return SdrType.SdrPlayRSPdx;
+
+        case SDRPLAY_RSPduo_ID:
+          return SdrType.SdrPlayRSPduo;
+
         default: return SdrType.SdrPlayOther;
       }
     }

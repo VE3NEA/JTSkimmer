@@ -5,12 +5,9 @@ namespace JTSkimmer
 {
   public class DisplayToken
   {
-    private static Brush defaultBgBrush = Brushes.Transparent;
-    internal static Brush defaultFgBrush = new SolidBrush(Color.FromKnownColor(KnownColor.WindowText));
-
     internal string text;
-    internal Brush bgBrush = defaultBgBrush;
-    internal Brush fgBrush = defaultFgBrush;
+    internal Brush bgBrush = Brushes.Transparent;
+    internal Brush fgBrush;
 
     public DisplayToken(string text) { this.text = text; }
   }
