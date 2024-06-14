@@ -36,13 +36,18 @@ namespace VE3NEA
     public unsafe struct nco_crcf { };
     public unsafe struct msresamp_crcf { };
     public unsafe struct ampmodem { };
-    public unsafe struct msresamp2_crcf {};
+    public unsafe struct msresamp2_crcf { };
+    public unsafe struct rresamp_cccf { };
+    public unsafe struct firfilt_cccf { };
 
 
-    // NCO
+  // NCO
+
+  [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe nco_crcf* nco_crcf_create(LiquidNcoType type);
 
     [DllImport(LIBLIQUID, CallingConvention = cdecl)]
-    public static extern unsafe nco_crcf* nco_crcf_create(LiquidNcoType type);
+    public static extern unsafe nco_crcf* nco_crcf_copy(nco_crcf* q);
 
     [DllImport(LIBLIQUID, CallingConvention = cdecl)]
     public static extern unsafe int nco_crcf_destroy(nco_crcf* q);
@@ -87,9 +92,43 @@ namespace VE3NEA
     public static extern unsafe msresamp2_crcf* msresamp2_crcf_create(LiquidResampType type, uint num_stages, float fc, float f0, float As);
 
     [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe msresamp2_crcf* msresamp2_crcf_copy(msresamp2_crcf* q);
+    
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
     public static extern unsafe int msresamp2_crcf_destroy(msresamp2_crcf* q);
 
     [DllImport(LIBLIQUID, CallingConvention = cdecl)]
     public static extern unsafe int msresamp2_crcf_execute(msresamp2_crcf* q, Complex32* x, out Complex32 y);
+
+
+    // rational resampler
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe rresamp_cccf* rresamp_cccf_create(uint interp, uint decim, uint m, Complex32* h);
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe int rresamp_cccf_print(rresamp_cccf* q);
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe rresamp_cccf* rresamp_cccf_copy(rresamp_cccf* q);
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe int rresamp_cccf_destroy(rresamp_cccf* q);
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe int rresamp_cccf_execute(rresamp_cccf* q, Complex32* x, Complex32* y);
+
+
+    // filter
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe firfilt_cccf* firfilt_cccf_create_kaiser(uint n, float fc, float As, float mu);
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe Complex32* firfilt_cccf_get_coefficients(firfilt_cccf* q);
+
+
+    [DllImport(LIBLIQUID, CallingConvention = cdecl)]
+    public static extern unsafe int firfilt_cccf_destroy(firfilt_cccf* q);
   }
 }

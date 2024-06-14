@@ -19,7 +19,7 @@ namespace JTSkimmer
     public MainForm()
     {
       InitializeComponent();
-
+      
       Text = Utils.GetVersionString();
 
       DecoderRunner.TryDeleteAllTempFolders();
@@ -99,6 +99,7 @@ namespace JTSkimmer
         ctx.Downsampler.NoiseBlanker.ApplySettings(ctx.Settings.NoiseBlanker);
         ctx.Downsampler.DataAvailable += Downsampler_DataAvailable;
         ctx.Downsampler.Enabled = !MustPause();
+        Slicer.DeletePrototypes();
 
         ctx.Sdr.StateChanged += Sdr_StateChanged;
         ctx.Sdr.DataAvailable += Sdr_DataAvailable;

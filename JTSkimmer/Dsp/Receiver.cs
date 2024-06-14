@@ -175,7 +175,8 @@ namespace JTSkimmer
 
     internal void SetNoiseFloor(float value) 
     { 
-      if (Slicer != null) Slicer.NoiseFloor = value; 
+      //{!}
+      //if (Slicer != null) Slicer.NoiseFloor = value; 
     }
     
     internal void StartProcessing(DataEventArgs<Complex32> e)

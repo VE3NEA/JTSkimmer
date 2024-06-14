@@ -94,12 +94,6 @@ namespace JTSkimmer
     }
 
 
-
-    //private Complex32[] SineWave = new Complex32[60000000];
-    private void MakeSineWave()
-    {
-    }
-
     double Phi, dPhi;
   
     // -1.5..1.5 MHz in 20 seconds at 3 MHz rate
