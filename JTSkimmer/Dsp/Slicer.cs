@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CSCore.Codecs.WAV;
 using CSCore.XAudio2;
 using MathNet.Numerics;
+using UN7ZO.HamCockpitPlugins.SDRPlaySource;
 using VE3NEA;
 
 
@@ -18,9 +19,8 @@ namespace JTSkimmer
     private const int STOPBAND_REJECTION_DB = 80;
     private const float USEFUL_BANDWIDTH = 0.95f;
     private const int FILTER_DELAY = 50; // the default in LiquidDsp is 15
-    private static readonly Complex32[] quarterFcSinusoid = { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
 
-    // typed pointers do not work in ths static fields, use IntPtr instead
+    // typed pointers do not work in the static fields, use IntPtr instead
     private static IntPtr msresamp2Prototype;
     private static IntPtr rresampPrototype;
     private static bool prototypesCreated;
@@ -47,11 +47,8 @@ namespace JTSkimmer
 
       // resampler creation is slow, create prototypes once and copy when needed
       EnsurePrototypes(inputRate);
-      if (msresamp2Prototype == IntPtr.Zero)
-        msresamp2 = null;
-      else
-        msresamp2 = NativeLiquidDsp.msresamp2_crcf_copy((NativeLiquidDsp.msresamp2_crcf*)msresamp2Prototype);
-
+      msresamp2 = msresamp2Prototype == IntPtr.Zero ? null : 
+        NativeLiquidDsp.msresamp2_crcf_copy((NativeLiquidDsp.msresamp2_crcf*)msresamp2Prototype);
       rresamp = NativeLiquidDsp.rresamp_cccf_copy((NativeLiquidDsp.rresamp_cccf*)rresampPrototype);
     }
 
@@ -67,21 +64,13 @@ namespace JTSkimmer
 
     private static double CreateOctaveResampler(double inputRate)
     {
-      int octaveStageCount = (int)Math.Truncate(Math.Log2(inputRate / SdrConst.AUDIO_SAMPLING_RATE));
+      int octaveStageCount = (int)Math.Ceiling(Math.Log2(inputRate / SdrConst.AUDIO_SAMPLING_RATE)) - 1;
       OctaveDecimationFactor = 1 << octaveStageCount;
-      double octaveResamplerOutputRate = inputRate / OctaveDecimationFactor;
-
-      // do not downsample directly to the audio rate, allow the rational resampler to do its work
-      if (octaveResamplerOutputRate == SdrConst.AUDIO_SAMPLING_RATE)
-      {
-        OctaveDecimationFactor /= 2;
-        octaveResamplerOutputRate *= 2;
-      }
 
       if (OctaveDecimationFactor == 1)
       {
         msresamp2Prototype = IntPtr.Zero;
-        return octaveResamplerOutputRate;
+        return inputRate;
       }
 
       msresamp2Prototype = (IntPtr)NativeLiquidDsp.msresamp2_crcf_create(
@@ -92,31 +81,27 @@ namespace JTSkimmer
         STOPBAND_REJECTION_DB
         );
 
-      return octaveResamplerOutputRate;
+      return inputRate / OctaveDecimationFactor;
     }
 
     private static void CreateRationalResampler(double inputRate)
     {
+      // find the ratio
       double rationalResamplingFactor = SdrConst.AUDIO_SAMPLING_RATE / inputRate;
       Debug.Assert(rationalResamplingFactor >= 0.5 && rationalResamplingFactor < 1);
-
-      // float to rational
       (RationalInterpolationFactor, RationalDecimationFactor) = Dsp.ApproximateRatio(rationalResamplingFactor, 1e-4);
 
       // design lowpass filter, -3..3 kHz passband
-
       float fc = 0.25f  / RationalDecimationFactor;
-
       uint filterLength = (uint)(2 * FILTER_DELAY * RationalInterpolationFactor + 1);
       var filter = NativeLiquidDsp.firfilt_cccf_create_kaiser(filterLength, fc, STOPBAND_REJECTION_DB, 0);
       var filterCoeffs = NativeLiquidDsp.firfilt_cccf_get_coefficients(filter);
 
-      Dsp.Mix(filterCoeffs, (int)filterLength, fc);
-      // shift filter passband in frequency to 0..6 kHz
+      // shift filter passband to 0..6 kHz
       // this filter not only limits the signal bandwidth before decimation
       // but also demodulates SSB by suppressing -6..0 kHz
-      //      for (int i = 0; i < filterLength; i++) filterCoeffs[i] *= quarterFcSinusoid[i % 4];
-      //for (int i = 0; i < filterLength; i++) filterCoeffs[i] = 1;
+      Dsp.Mix(filterCoeffs, (int)filterLength, fc);
+      for (int i = 0; i < filterLength; i++) filterCoeffs[i] *= 4000;
 
       // create resampler/demodulator
       rresampPrototype = (IntPtr)NativeLiquidDsp.rresamp_cccf_create(
@@ -163,42 +148,18 @@ namespace JTSkimmer
         ApplyRationalResampler(RationalResamplerInputBuffer);
       }
 
-     // CollectOutput(RationalResamplerOutputBuffer.Data, RationalResamplerOutputBuffer.Count);
-
-
       // return the real part
       int outputCount = RationalResamplerOutputBuffer.Count;
       var outputArgs = ArgsPool.Rent(outputCount);
-      for (int i = 0; i < outputCount; i++) outputArgs.Data[i] = RationalResamplerOutputBuffer.Data[i].Real * 40000;
+      for (int i = 0; i < outputCount; i++) outputArgs.Data[i] = RationalResamplerOutputBuffer.Data[i].Real;
       RationalResamplerOutputBuffer.Count = 0;
       outputArgs.ReceivedAt = args.ReceivedAt;
       DataAvailable?.Invoke(this, outputArgs);
       ArgsPool.Return(outputArgs);
     }
 
-    float[] collected = new float[2000];
-    int idx = 0;
-    private void CollectOutput(Complex32[] data, int count = -1)
-    {
-      if (count == -1) count = data.Length;
-      if (idx < collected.Length)
-        for (int i=0;i<count; i++)
-        {
-          collected[idx++] = data[i].Real;
-
-          if (idx >= collected.Length)
-          {
-            idx = 0;
-            string stringToInspect = string.Join('\n', collected.Select((v, i) => $"{i}  {v}"));
-            break;
-          }
-        }
-    }
-
-    int v=0;
     public void ApplyOctaveResampler(FifoBuffer<Complex32> buffer)
     {
-      //for (int i = 0; i < buffer.Count; i++) buffer.Data[i] = v++;
       OctaveResamplerInputBuffer.Append(buffer);
       int blockCount = OctaveResamplerInputBuffer.Count / OctaveDecimationFactor;
       if (blockCount == 0) return;
@@ -241,6 +202,7 @@ namespace JTSkimmer
         for (int blockNo = 0; blockNo < blockCount; blockNo++)
         {
           int rc = NativeLiquidDsp.rresamp_cccf_execute(rresamp, pIn, pOut);
+          // rc is never zero yet resampling works correctly
           //if (rc != 0) throw new Exception($"LiquidDsp error {rc}");
           pIn += RationalDecimationFactor;
           pOut += RationalInterpolationFactor;

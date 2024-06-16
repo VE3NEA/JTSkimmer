@@ -57,9 +57,6 @@ namespace JTSkimmer
       Array.Copy(args.Data, 0, InBuffer, InCount, args.Data.Length);
       InCount += args.Data.Length;
 
-      // {!}
-//      AddSineWave(InBuffer);
-
       int outCount = InCount / DecimationFactor;
       if (outCount == 0) return;
       if (outCount != OutBuffer.Length) OutBuffer = new Complex32[outCount];
@@ -72,9 +69,6 @@ namespace JTSkimmer
           int rc = NativeLiquidDsp.msresamp2_crcf_execute(resamp, pBlock, out pOutBuffer[i]);
           if (rc != 0) throw new Exception($"{rc}");
         }
-
-      // {!}
-      AddSineWave(OutBuffer);
 
       int usedCount = outCount * DecimationFactor;
       InCount -= usedCount;
@@ -90,29 +84,6 @@ namespace JTSkimmer
 
       if (resamp != null) NativeLiquidDsp.msresamp2_crcf_destroy(resamp);
       resamp = null;
-    }
-
-
-    double Phi, dPhi;
-
-    // -1.5..1.5 MHz in 20 seconds at 3 MHz rate
-    //    double ddPhi = 2 * Math.PI / 3000000 / 30;
-
-    // -180..180 kHz in 60 seconds at 360 kHz rate
-    double ddPhi = 2 * Math.PI / 360000 / 60;
-    private void AddSineWave(Complex32[] buffer)
-    {
-      for (int i = 0; i < buffer.Length; i++)
-      {
-        buffer[i] += 0.005f * new Complex32((float)Math.Cos(Phi), (float)Math.Sin(Phi));
-        
-        Phi += dPhi;
-        if (Phi > Math.PI) Phi -= 2 * Math.PI;
-        if (Phi < -Math.PI) Phi += 2 * Math.PI;
-
-        dPhi += ddPhi;
-        if (dPhi > Math.PI) dPhi -= 2 * Math.PI;
-      }
     }
   }
 }

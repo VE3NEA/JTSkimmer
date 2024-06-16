@@ -19,6 +19,20 @@ namespace JTSkimmer
       Count = totalCount;
     }
 
+    public FifoBuffer() { }
+
+    public FifoBuffer(T[] data)
+    {
+      Data = data;
+      Count = data.Length;
+    }
+
+    public FifoBuffer(T[] data, int count)
+    {
+      Data = data;
+      Count = count;
+    }
+
     public void Dump(int count)
     {
       if (count == 0) return;
