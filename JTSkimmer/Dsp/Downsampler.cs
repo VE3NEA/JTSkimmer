@@ -8,7 +8,7 @@ namespace JTSkimmer
   internal unsafe class Downsampler : ThreadedProcessor<Complex32>
   {
     private const float STOPBAND_REJECTION_DB = 80;
-    private const float USEFUL_BANDWIDTH = 0.97f;
+    private const float USEFUL_BANDWIDTH = 0.95f;
 
     private NativeLiquidDsp.msresamp2_crcf* resamp;
     private Complex32[] InBuffer = Array.Empty<Complex32>();
@@ -32,7 +32,7 @@ namespace JTSkimmer
       if (DecimationFactor > 1)
         resamp = NativeLiquidDsp.msresamp2_crcf_create(NativeLiquidDsp.LiquidResampType.LIQUID_RESAMP_DECIM,
           stageCount, 0.5f * USEFUL_BANDWIDTH, 0, STOPBAND_REJECTION_DB);
-
+        
       NoiseBlanker = new NoiseBlanker(inputSamplingRate);
     }
 
