@@ -16,8 +16,8 @@ namespace JTSkimmer
   public unsafe class Slicer : ThreadedProcessor<Complex32>
   {
     private const int STOPBAND_REJECTION_DB = 80;
-    private const float USEFUL_BANDWIDTH = 0.99f;
-    private const int FILTER_DELAY = 15; // this is the default in LiquidDsp, adjust if needed
+    private const float USEFUL_BANDWIDTH = 0.95f;
+    private const int FILTER_DELAY = 50; // the default in LiquidDsp is 15
     private static readonly Complex32[] quarterFcSinusoid = { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
 
     // typed pointers do not work in ths static fields, use IntPtr instead
@@ -104,14 +104,19 @@ namespace JTSkimmer
       (RationalInterpolationFactor, RationalDecimationFactor) = Dsp.ApproximateRatio(rationalResamplingFactor, 1e-4);
 
       // design lowpass filter, -3..3 kHz passband
-      uint filterLength = (uint)(2 * FILTER_DELAY * RationalDecimationFactor + 1);
-      var filter = NativeLiquidDsp.firfilt_cccf_create_kaiser(filterLength, 0.25f, STOPBAND_REJECTION_DB, 0);
+
+      float fc = 0.25f  / RationalDecimationFactor;
+
+      uint filterLength = (uint)(2 * FILTER_DELAY * RationalInterpolationFactor + 1);
+      var filter = NativeLiquidDsp.firfilt_cccf_create_kaiser(filterLength, fc, STOPBAND_REJECTION_DB, 0);
       var filterCoeffs = NativeLiquidDsp.firfilt_cccf_get_coefficients(filter);
 
+      Dsp.Mix(filterCoeffs, (int)filterLength, fc);
       // shift filter passband in frequency to 0..6 kHz
       // this filter not only limits the signal bandwidth before decimation
       // but also demodulates SSB by suppressing -6..0 kHz
-      for (int i = 0; i < filterLength; i++) filterCoeffs[i] *= quarterFcSinusoid[i % 4];
+      //      for (int i = 0; i < filterLength; i++) filterCoeffs[i] *= quarterFcSinusoid[i % 4];
+      //for (int i = 0; i < filterLength; i++) filterCoeffs[i] = 1;
 
       // create resampler/demodulator
       rresampPrototype = (IntPtr)NativeLiquidDsp.rresamp_cccf_create(
@@ -158,22 +163,45 @@ namespace JTSkimmer
         ApplyRationalResampler(RationalResamplerInputBuffer);
       }
 
+     // CollectOutput(RationalResamplerOutputBuffer.Data, RationalResamplerOutputBuffer.Count);
+
 
       // return the real part
       int outputCount = RationalResamplerOutputBuffer.Count;
       var outputArgs = ArgsPool.Rent(outputCount);
-      for (int i = 0; i < outputCount; i++) outputArgs.Data[i] = RationalResamplerOutputBuffer.Data[i].Real * 4000;
+      for (int i = 0; i < outputCount; i++) outputArgs.Data[i] = RationalResamplerOutputBuffer.Data[i].Real * 40000;
       RationalResamplerOutputBuffer.Count = 0;
       outputArgs.ReceivedAt = args.ReceivedAt;
       DataAvailable?.Invoke(this, outputArgs);
       ArgsPool.Return(outputArgs);
-
     }
 
+    float[] collected = new float[2000];
+    int idx = 0;
+    private void CollectOutput(Complex32[] data, int count = -1)
+    {
+      if (count == -1) count = data.Length;
+      if (idx < collected.Length)
+        for (int i=0;i<count; i++)
+        {
+          collected[idx++] = data[i].Real;
+
+          if (idx >= collected.Length)
+          {
+            idx = 0;
+            string stringToInspect = string.Join('\n', collected.Select((v, i) => $"{i}  {v}"));
+            break;
+          }
+        }
+    }
+
+    int v=0;
     public void ApplyOctaveResampler(FifoBuffer<Complex32> buffer)
     {
+      //for (int i = 0; i < buffer.Count; i++) buffer.Data[i] = v++;
       OctaveResamplerInputBuffer.Append(buffer);
       int blockCount = OctaveResamplerInputBuffer.Count / OctaveDecimationFactor;
+      if (blockCount == 0) return;
       RationalResamplerInputBuffer.EnsureExtraSpace(blockCount);
 
       fixed (Complex32* pInBuffer = OctaveResamplerInputBuffer.Data)

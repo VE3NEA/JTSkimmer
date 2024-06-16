@@ -139,17 +139,22 @@ namespace VE3NEA
     /// <param name="data">The data.</param>
     /// <param name="frequency">The frequency.</param>
     /// <param name="phase">The starting phase.</param>    
-    public static void Mix(Complex32[] data, double frequency, double phase = 0)
+    public static void Mix(Complex32* pData, int count, double frequency, double phase = 0)
     {
       Complex phasor = new Complex(Math.Cos(phase), Math.Sin(phase));
       double dPhase = 2 * Math.PI * frequency;
       Complex dPhasor = new Complex(Math.Cos(dPhase), Math.Sin(dPhase));
 
-      for (int i=0; i<data.Length; i++)
+      for (int i = 0; i < count; i++)
       {
-        data[i] *= new Complex32((float)phasor.Real, (float)phasor.Imaginary);
+        pData[i] *= new Complex32((float)phasor.Real, (float)phasor.Imaginary);
         phasor *= dPhasor;
       }
+    }
+
+    public static void Mix(Complex32[] data, double frequency, double phase = 0)
+    {
+      fixed (Complex32* pData = data) Mix(pData, data.Length, frequency, phase);
     }
 
     /// <summary>Unpacks complex values from the array of floats.</summary>

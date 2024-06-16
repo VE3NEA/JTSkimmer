@@ -8,7 +8,7 @@ namespace JTSkimmer
   internal unsafe class Downsampler : ThreadedProcessor<Complex32>
   {
     private const float STOPBAND_REJECTION_DB = 80;
-    private const float USEFUL_BANDWIDTH = 0.99f;
+    private const float USEFUL_BANDWIDTH = 0.95f;
 
     private NativeLiquidDsp.msresamp2_crcf* resamp;
     private Complex32[] InBuffer = Array.Empty<Complex32>();
@@ -32,7 +32,7 @@ namespace JTSkimmer
       if (DecimationFactor > 1)
         resamp = NativeLiquidDsp.msresamp2_crcf_create(NativeLiquidDsp.LiquidResampType.LIQUID_RESAMP_DECIM,
           stageCount, 0.5f * USEFUL_BANDWIDTH, 0, STOPBAND_REJECTION_DB);
-
+        
       NoiseBlanker = new NoiseBlanker(inputSamplingRate);
     }
 
@@ -73,7 +73,6 @@ namespace JTSkimmer
           if (rc != 0) throw new Exception($"{rc}");
         }
 
-
       // {!}
       AddSineWave(OutBuffer);
 
@@ -95,9 +94,9 @@ namespace JTSkimmer
 
 
     double Phi, dPhi;
-  
+
     // -1.5..1.5 MHz in 20 seconds at 3 MHz rate
-//    double ddPhi = 2 * Math.PI / 3000000 / 30;
+    //    double ddPhi = 2 * Math.PI / 3000000 / 30;
 
     // -180..180 kHz in 60 seconds at 360 kHz rate
     double ddPhi = 2 * Math.PI / 360000 / 60;
@@ -105,7 +104,7 @@ namespace JTSkimmer
     {
       for (int i = 0; i < buffer.Length; i++)
       {
-        buffer[i] += 0.5f * new Complex32((float)Math.Cos(Phi), (float)Math.Sin(Phi));
+        buffer[i] += 0.005f * new Complex32((float)Math.Cos(Phi), (float)Math.Sin(Phi));
         
         Phi += dPhi;
         if (Phi > Math.PI) Phi -= 2 * Math.PI;
