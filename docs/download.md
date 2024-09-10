@@ -5,7 +5,7 @@ title: Download
 
 ### Current Version
 
-[JTSkimmer.zip v.1.03 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.1.03-beta/JTSkimmer.zip)
+[JTSkimmer.zip v.1.04 Beta](https://github.com/VE3NEA/JTSkimmer/releases/download/v.1.04-beta/JTSkimmer.zip)
 
 <br>
 
@@ -24,6 +24,12 @@ See [All Releases](https://github.com/VE3NEA/JTSkimmer/releases)
 
 <br>
 ### Release Notes
+
+#### v.1.04 Beta
+
+- reduced audio latency;
+
+- fixed occasional crashes when the SDR Radios dialog is closed.
 
 #### v.1.03 Beta
 

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "JT Skimmer"
-#define MyAppVersion "1.03 beta"
+#define MyAppVersion "1.04 beta"
 #define MyAppPublisher "Alex VE3NEA"
 #define MyAppURL "https://ve3nea.github.io/JTSkimmer"
 #define MyAppExeName "JTSkimmer.exe"
@@ -28,6 +28,8 @@ SolidCompression=true
 ArchitecturesInstallIn64BitMode=x64
 DisableStartupPrompt=true
 ShowLanguageDialog=no
+AlwaysShowComponentsList=true
+DisableReadyPage=true
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
