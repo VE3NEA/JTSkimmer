@@ -6,7 +6,7 @@ namespace JTSkimmer
   public class WaveSource : IWaveSource
   {
     private readonly WaveFormat format = new WaveFormat(SdrConst.AUDIO_SAMPLING_RATE, 32, 1, AudioEncoding.IeeeFloat);
-    private RingBuffer<float> ringBuffer = new(SdrConst.AUDIO_SAMPLING_RATE);
+    private RingBuffer<float> ringBuffer = new(SdrConst.AUDIO_SAMPLING_RATE / 7);
 
     public void AddSamples(float[] samples, int offset = 0, int? count = null)
     {
