@@ -20,7 +20,6 @@
       this.ctx = ctx;
 
       if (!ctx.Settings.NoiseBlanker.Enabled) radioButton1.Checked = true;
-      else if (ctx.Settings.NoiseBlanker.Nonlinear) radioButton3.Checked = true;
       else radioButton2.Checked = true;
 
       trackBar1.Value = ctx.Settings.NoiseBlanker.ThresholdTrackbarPosition;
@@ -36,7 +35,6 @@
     private void radioButton_CheckedChanged(object sender, EventArgs e)
     {
       ctx.Settings.NoiseBlanker.Enabled = !radioButton1.Checked;
-      ctx.Settings.NoiseBlanker.Nonlinear = radioButton3.Checked;
       ctx.Downsampler?.NoiseBlanker?.ApplySettings(ctx.Settings.NoiseBlanker);
     }
 
