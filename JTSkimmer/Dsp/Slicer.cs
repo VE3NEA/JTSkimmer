@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CSCore.Codecs.WAV;
 using CSCore.XAudio2;
 using MathNet.Numerics;
+using Serilog;
 using UN7ZO.HamCockpitPlugins.SDRPlaySource;
 using VE3NEA;
 
@@ -117,9 +118,18 @@ namespace JTSkimmer
 
     public static void DeletePrototypes()
     {
-      if (msresamp2Prototype != IntPtr.Zero) NativeLiquidDsp.msresamp2_crcf_destroy((NativeLiquidDsp.msresamp2_crcf*)msresamp2Prototype);
-      if (rresampPrototype != IntPtr.Zero) NativeLiquidDsp.rresamp_cccf_destroy((NativeLiquidDsp.rresamp_cccf*)rresampPrototype);
-      prototypesCreated = false;
+      try
+      {
+        if (msresamp2Prototype != IntPtr.Zero) NativeLiquidDsp.msresamp2_crcf_destroy((NativeLiquidDsp.msresamp2_crcf*)msresamp2Prototype);
+        if (rresampPrototype != IntPtr.Zero) NativeLiquidDsp.rresamp_cccf_destroy((NativeLiquidDsp.rresamp_cccf*)rresampPrototype);
+        msresamp2Prototype = IntPtr.Zero;
+        rresampPrototype = IntPtr.Zero;
+        prototypesCreated = false;
+      }
+      catch (Exception e)
+      {
+        Log.Error(e, $"Error destroying prototypes: {e.Message}");
+      }
     }
 
     public void SetUpMixer(double offset)

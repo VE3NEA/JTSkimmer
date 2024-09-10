@@ -15,7 +15,7 @@ namespace JTSkimmer
 {
   internal class SdrPlayDevice : BaseSdrDevice
   {
-    private const float SDRPLAY_API_VERSION = 3.14f;
+    private const float SDRPLAY_API_VERSION = 3.15f;
     public const int SDRPLAY_RSP1B_ID = 6;
     public const int SDRPLAY_RSPdxR2_ID = 7;
     
