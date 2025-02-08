@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using Serilog;
 using WsjtxUtils.WsjtxMessages;
 
@@ -45,7 +46,6 @@ namespace JTSkimmer
 
     public void Dispose()
     {
-      Send();
       Stop();
       Timer.Dispose();
     }
@@ -64,7 +64,8 @@ namespace JTSkimmer
       try
       {
         Stop();
-        UdpClient = new("report.pskreporter.info", 4739);
+        UdpClient = new();
+        UdpClient.Client.SendTimeout = 2000;
         Send();
         Timer.Start();
       }
@@ -106,7 +107,7 @@ namespace JTSkimmer
       do
       {
         var datagram = BuildDatagram();
-        UdpClient.Send(datagram);
+        UdpClient.Send(datagram, "report.pskreporter.info", 4739);
       }
       while (Messages.Any());
     }
