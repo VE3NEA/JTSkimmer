@@ -129,7 +129,12 @@ namespace JTSkimmer
         return;
 
       else
-        DecodedMessages.Add(e.Data.Replace('\0', ' ').Trim());
+      {
+        string message = e.Data.Replace('\0', ' ').Trim();
+        // Q65-60A sometimes has time as 4 digits instead of 6
+        if (message.Length > 4 && message[4] == ' ') message = message.Insert(4, "00");
+        DecodedMessages.Add(message);
+      }
     }
 
 
